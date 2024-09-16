@@ -1,30 +1,31 @@
-window.addEventListener('DOMContentLoaded', () => {
+function addListenersOnTextareas(): void {
     const cipherForm: HTMLFormElement = document.forms.namedItem('cipherForm')!;
-    const sourceTextarea: HTMLElement = document.getElementById('sourceText')!;
-    const encryptedTextarea: HTMLElement = document.getElementById('encryptedText')!;
+    const sourceTextarea = document.getElementById('sourceText')! as HTMLTextAreaElement;
+    const encryptedTextarea = document.getElementById('encryptedText')! as HTMLTextAreaElement;
 
     function onTextChange(mode: 'source' | 'encrypted'): void {
         const formData = new FormData(cipherForm);
         if (mode === 'source') {
             const sourceText = formData.get('sourceText') as string;
-            encryptedTextarea.textContent = sourceText;
+            encryptedTextarea.value = sourceText;
         } else {
             const encryptedText = formData.get('encryptedText') as string;
-            sourceTextarea.textContent = encryptedText;
+            sourceTextarea.value = encryptedText;
         }
     }
 
-    sourceTextarea.addEventListener('change', () => onTextChange('source'));
-    sourceTextarea.addEventListener('keypress', () => onTextChange('source'));
-    encryptedTextarea.addEventListener('change', () => onTextChange('encrypted'));
-    encryptedTextarea.addEventListener('keypress', () => onTextChange('encrypted'));
+    sourceTextarea.addEventListener('input', () => onTextChange('source'));
+    encryptedTextarea.addEventListener('input', () => onTextChange('encrypted'));
+}
 
+function addListenersOnRadiobuttons(): void {
     const richelieuRadio: HTMLElement = document.getElementById('cipherMethodRadioRichelieu')!;
     const feistelRadio: HTMLElement = document.getElementById('cipherMethodRadioFeistel')!;
     const richelieuInfo: HTMLElement = document.getElementById('richelieuInfo')!;
     const feistelInfo: HTMLElement = document.getElementById('feistelInfo')!;
     const richelieuLabel: HTMLElement = document.getElementById('cipherMethodRadioRichelieuLabel')!;
     const feistelLabel: HTMLElement = document.getElementById('cipherMethodRadioFeistelLabel')!;
+
     richelieuRadio.addEventListener('change', () => {
         feistelInfo.classList.add('d-none');
         richelieuInfo.classList.remove('d-none');
@@ -37,4 +38,9 @@ window.addEventListener('DOMContentLoaded', () => {
         richelieuLabel.classList.remove('fw-bold');
         feistelLabel.classList.add('fw-bold');
     });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    addListenersOnTextareas();
+    addListenersOnRadiobuttons();
 });
