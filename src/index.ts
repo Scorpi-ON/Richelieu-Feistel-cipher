@@ -14,8 +14,21 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    sourceTextarea.addEventListener('change', (e) => onTextChange('source'));
-    sourceTextarea.addEventListener('keypress', (e) => onTextChange('source'));
-    encryptedTextarea.addEventListener('change', (e) => onTextChange('encrypted'));
-    encryptedTextarea.addEventListener('keypress', (e) => onTextChange('encrypted'));
+    sourceTextarea.addEventListener('change', () => onTextChange('source'));
+    sourceTextarea.addEventListener('keypress', () => onTextChange('source'));
+    encryptedTextarea.addEventListener('change', () => onTextChange('encrypted'));
+    encryptedTextarea.addEventListener('keypress', () => onTextChange('encrypted'));
+
+    const richelieuRadio: HTMLElement = document.getElementById('cipherMethodRadio_Richelieu')!;
+    const feistelRadio: HTMLElement = document.getElementById('cipherMethodRadio_Feistel')!;
+    const richelieuInfo: HTMLElement = document.getElementById('richelieuInfo')!;
+    const feistelInfo: HTMLElement = document.getElementById('feistelInfo')!;
+    richelieuRadio.addEventListener('change', () => {
+        feistelInfo.classList.add('d-none');
+        richelieuInfo.classList.remove('d-none');
+    });
+    feistelRadio.addEventListener('change', () => {
+        richelieuInfo.classList.add('d-none');
+        feistelInfo.classList.remove('d-none');
+    });
 });
