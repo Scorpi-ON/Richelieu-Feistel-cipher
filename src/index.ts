@@ -14,8 +14,15 @@ function addListenersOnTextareas(): void {
         }
     }
 
+    function syncScroll(source: HTMLTextAreaElement, target: HTMLTextAreaElement): void {
+        target.scrollTop = source.scrollTop;
+        target.scrollLeft = source.scrollLeft;
+    }
+
     sourceTextarea.addEventListener('input', () => onTextChange('source'));
     encryptedTextarea.addEventListener('input', () => onTextChange('encrypted'));
+    sourceTextarea.addEventListener('scroll', () => syncScroll(sourceTextarea, encryptedTextarea));
+    encryptedTextarea.addEventListener('scroll', () => syncScroll(encryptedTextarea, sourceTextarea));
 }
 
 function addListenersOnRadiobuttons(): void {
