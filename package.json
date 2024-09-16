@@ -1,0 +1,29 @@
+{
+  "name": "richelieu-feistel-cipher",
+  "version": "1.0.0",
+  "description": "Web interface of the Richelieu and Feistel ciphers",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write ./src/*.{js,ts}",
+    "lint": "eslint --fix",
+    "stylelint": "stylelint *.css"
+  },
+  "dependencies": {
+    "typescript": "^5.5.3",
+    "tslib": "^2.7.0",
+    "vite": "^5.4.2"
+  },
+  "devDependencies": {
+    "eslint": "^9.7.0",
+    "@typescript-eslint/eslint-plugin": "^8.5.0",
+    "@typescript-eslint/parser": "^8.5.0",
+    "prettier": "^3.3.3",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "stylelint": "^16.7.0"
+  }
+}
