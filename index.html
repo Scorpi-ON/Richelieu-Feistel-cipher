@@ -8,35 +8,37 @@
 </head>
 <body>
 <h1>Лабораторная работа по БПиД №2<br>вариант 7</h1>
-<div class="container">
+<div class="container-fluid">
     <form name="cipherForm" class="row ">
-        <div class="col-2">
+        <div class="col-4">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
-                <label class="form-check-label" for="flexRadioDefault1">Шифр Ришелье</label>
+                <input class="form-check-input" type="radio" name="cipherMethodRadio" id="cipherMethodRadio_Richelieu" checked>
+                <label class="form-check-label" for="cipherMethodRadio_Richelieu">Шифр Ришелье</label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                <label class="form-check-label" for="flexRadioDefault2">Сеть Фейстеля</label>
+                <input class="form-check-input" type="radio" name="cipherMethodRadio" id="cipherMethodRadio_Feistel">
+                <label class="form-check-label" for="cipherMethodRadio_Feistel">Сеть Фейстеля</label>
+            </div>
+            <br>
+            <div id="richelieuInfo">
+                <p>Инфа о шифре Ришелье</p>
+            </div>
+            <div id="feistelInfo" class="d-none">
+                <p>Инфа о сети Фейстеля</p>
             </div>
         </div>
-        <div class="col-5">
+        <div class="col-4">
                 <textarea id="sourceText" name="sourceText" rows="10" class="form-control" type="text"
                           placeholder="Исходный текст"
                           multiple></textarea>
             <button class="btn btn-primary">Загрузить из файла</button>
         </div>
-        <div class="col-5">
+        <div class="col-4">
                 <textarea id="encryptedText" name="encryptedText" rows="10" class="form-control" type="text"
                           placeholder="Закодированный текст" multiple></textarea>
             <button class="btn btn-primary">Загрузить из файла</button>
         </div>
     </form>
-    <div class="row">
-        <p>
-            Шифр Ришелье
-        </p>
-    </div>
 </div>
 <script type="module" src="/src/index.ts"></script>
 </body>
