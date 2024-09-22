@@ -6,15 +6,15 @@
         <title>БПиД №2.7</title>
         <link href="/src/index.css" rel="stylesheet" />
     </head>
-    <body>
+    <body class="flex flex-col min-h-screen">
         <header class="p-4">
             <h1 class="text-center font-medium sm:text-2xl">
                 Лабораторная работа по БПиД №2<br />вариант 7
             </h1>
         </header>
-        <div>
-            <form name="cipherForm" class="mx-5 flex flex-wrap sm:space-x-5">
-                <div class="w-full pb-10 md:w-80">
+        <main class="flex-grow">
+            <form name="cipherForm" class="mx-5 flex flex-wrap">
+                <div class="w-full pb-10 lg:w-80">
                     <label class="label cursor-pointer justify-center space-x-2">
                         <span class="label-text font-bold" id="cipherMethodCheckboxRichelieuLabel">
                             Шифр Ришелье
@@ -29,7 +29,7 @@
                         </span>
                     </label>
                     <div id="richelieuInfo">
-                        <p>Инфа о шифре Ришелье</p>
+                        <p>Инфа о шифре Ришелье skdbjhj bdjh vdjfvshg vfvhgvs dhfgv hsgdfh gsvdfhgvsdgfvjks v hfgsh gvfhgsvdjgfv hsdgvf hgsdf hgsvdfjv sdjfkhsdl hfvjgfv jkgdvfkg vshkgfvkhs gdvfhv kjdsfgkhfhb jkdvfkgsv dfhkv skfvhkgv dsfhkvgh vsgdv vsdhgvfhgvsghkfv ghsdgv ghf</p>
                     </div>
                     <div id="feistelInfo" class="hidden">
                         <p>Инфа о сети Фейстеля</p>
@@ -40,7 +40,7 @@
                 >
                     <div class="flex w-full flex-col space-y-3 sm:w-auto sm:grow">
                         <textarea
-                            class="textarea textarea-bordered h-64 resize-none sm:h-96"
+                            class="textarea textarea-bordered h-48 resize-none sm:h-96"
                             id="sourceText"
                             name="sourceText"
                             placeholder="Исходный текст"
@@ -52,9 +52,9 @@
                             <input type="file" class="file-input file-input-sm" />
                         </div>
                     </div>
-                    <div class="flex w-full flex-col space-y-3 sm:w-auto sm:grow">
+                    <div class="flex flex-col space-y-3 w-full sm:w-auto sm:grow">
                         <textarea
-                            class="textarea textarea-bordered h-64 resize-none sm:h-96"
+                            class="textarea textarea-bordered h-48 resize-none sm:h-96"
                             id="encryptedText"
                             name="encryptedText"
                             placeholder="Закодированный текст"
@@ -67,10 +67,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="w-80"></div>
+                <div class="lg:w-80"></div>
             </form>
-        </div>
-        <footer class="footer footer-center p-5 text-base-content">
+        </main>
+        <footer class="footer footer-center p-5">
             <p>© Scorpi-ON — 2024</p>
         </footer>
         <script type="module" src="/src/index.ts"></script>
