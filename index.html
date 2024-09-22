@@ -6,11 +6,17 @@
         <title>БПиД №2.7</title>
         <link href="/src/index.css" rel="stylesheet" />
     </head>
-    <body class="flex flex-col min-h-screen">
+    <body class="flex min-h-screen flex-col">
         <header class="p-4">
             <h1 class="text-center font-medium sm:text-2xl">
                 Лабораторная работа по БПиД №2<br />вариант 7
             </h1>
+            <button
+                id="themeSwitcherButton"
+                class="btn absolute right-0 top-10 border-transparent bg-transparent text-2xl hover:border-transparent hover:bg-transparent sm:top-6 sm:text-3xl lg:right-6"
+            >
+                ☀️
+            </button>
         </header>
         <main class="flex-grow">
             <form name="cipherForm" class="mx-5 flex flex-wrap">
@@ -29,7 +35,7 @@
                         </span>
                     </label>
                     <div id="richelieuInfo">
-                        <p>Инфа о шифре Ришелье skdbjhj bdjh vdjfvshg vfvhgvs dhfgv hsgdfh gsvdfhgvsdgfvjks v hfgsh gvfhgsvdjgfv hsdgvf hgsdf hgsvdfjv sdjfkhsdl hfvjgfv jkgdvfkg vshkgfvkhs gdvfhv kjdsfgkhfhb jkdvfkgsv dfhkv skfvhkgv dsfhkvgh vsgdv vsdhgvfhgvsghkfv ghsdgv ghf</p>
+                        <p>Инфа о шифре Ришелье</p>
                     </div>
                     <div id="feistelInfo" class="hidden">
                         <p>Инфа о сети Фейстеля</p>
@@ -49,10 +55,13 @@
                             class="tooltip"
                             data-tip="Из этого файла будет считываться (и в него же записываться) исходный текст"
                         >
-                            <input type="file" class="file-input file-input-sm" />
+                            <input
+                                type="file"
+                                class="file-input file-input-bordered file-input-sm w-full"
+                            />
                         </div>
                     </div>
-                    <div class="flex flex-col space-y-3 w-full sm:w-auto sm:grow">
+                    <div class="flex w-full flex-col space-y-3 sm:w-auto sm:grow">
                         <textarea
                             class="textarea textarea-bordered h-48 resize-none sm:h-96"
                             id="encryptedText"
@@ -63,7 +72,10 @@
                             class="tooltip"
                             data-tip="В этот файл будет записываться (и из него же считываться) закодированный текст"
                         >
-                            <input type="file" class="file-input file-input-sm" />
+                            <input
+                                type="file"
+                                class="file-input file-input-bordered file-input-sm w-full"
+                            />
                         </div>
                     </div>
                 </div>

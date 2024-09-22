@@ -4,16 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  theme: {
-    extend: {
-      screens: {
-        'h-sm': {'raw': '(max-height: 640px)'},
-        'h-md': {'raw': '(min-height: 641px) and (max-height: 768px)'},
-        'h-lg': {'raw': '(min-height: 769px) and (max-height: 1024px)'},
-        'h-xl': {'raw': '(min-height: 1025px)'},
-      },
-    },
-  },
+  themes: ['light', 'dark'],
   plugins: [
       require('daisyui')
   ],

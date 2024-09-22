@@ -1,3 +1,5 @@
+type ColorScheme = 'light' | 'dark';
+
 function addListenersOnTextareas(): void {
     const cipherForm: HTMLFormElement = document.forms.namedItem('cipherForm')!;
     const sourceTextarea = document.getElementById('sourceText')! as HTMLTextAreaElement;
@@ -22,16 +24,20 @@ function addListenersOnTextareas(): void {
     sourceTextarea.addEventListener('input', () => onTextChange('source'));
     encryptedTextarea.addEventListener('input', () => onTextChange('encrypted'));
     sourceTextarea.addEventListener('scroll', () => syncScroll(sourceTextarea, encryptedTextarea));
-    encryptedTextarea.addEventListener('scroll', () => syncScroll(encryptedTextarea, sourceTextarea));
+    encryptedTextarea.addEventListener('scroll', () =>
+        syncScroll(encryptedTextarea, sourceTextarea)
+    );
 }
 
 function addListenersOnRadiobuttons(): void {
-    const cipherMethodCheckbox: HTMLInputElement = document.getElementById(
+    const cipherMethodCheckbox = document.getElementById(
         'cipherMethodCheckbox'
     )! as HTMLInputElement;
     const richelieuInfo: HTMLElement = document.getElementById('richelieuInfo')!;
     const feistelInfo: HTMLElement = document.getElementById('feistelInfo')!;
-    const richelieuLabel: HTMLElement = document.getElementById('cipherMethodCheckboxRichelieuLabel')!;
+    const richelieuLabel: HTMLElement = document.getElementById(
+        'cipherMethodCheckboxRichelieuLabel'
+    )!;
     const feistelLabel: HTMLElement = document.getElementById('cipherMethodCheckboxFeistelLabel')!;
 
     cipherMethodCheckbox.addEventListener('change', function () {
@@ -49,7 +55,31 @@ function addListenersOnRadiobuttons(): void {
     });
 }
 
+function setThemeSwitching(): void {
+    const themeSwitcherButton = document.getElementById(
+        'themeSwitcherButton'
+    ) as HTMLButtonElement;
+
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.setAttribute('data-theme', 'dark');
+        themeSwitcherButton.innerText = '☀️';
+    }
+
+    themeSwitcherButton.addEventListener('click', () => {
+        const newColorScheme: ColorScheme =
+            document.body.getAttribute('data-theme')! === 'dark' ? 'light' : 'dark';
+        themeSwitcherButton.innerText = newColorScheme === 'dark' ? '☀️' : '🌑';
+        document.body.setAttribute('data-theme', newColorScheme);
+    });
+}
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+    const newColorScheme: ColorScheme = event.matches ? 'dark' : 'light';
+    document.body.setAttribute('data-theme', newColorScheme);
+});
+
 window.addEventListener('DOMContentLoaded', () => {
+    setThemeSwitching();
     addListenersOnTextareas();
     addListenersOnRadiobuttons();
 });
