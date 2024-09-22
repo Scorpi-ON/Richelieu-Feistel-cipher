@@ -26,24 +26,26 @@ function addListenersOnTextareas(): void {
 }
 
 function addListenersOnRadiobuttons(): void {
-    const richelieuRadio: HTMLElement = document.getElementById('cipherMethodRadioRichelieu')!;
-    const feistelRadio: HTMLElement = document.getElementById('cipherMethodRadioFeistel')!;
+    const cipherMethodCheckbox: HTMLInputElement = document.getElementById(
+        'cipherMethodCheckbox'
+    )! as HTMLInputElement;
     const richelieuInfo: HTMLElement = document.getElementById('richelieuInfo')!;
     const feistelInfo: HTMLElement = document.getElementById('feistelInfo')!;
-    const richelieuLabel: HTMLElement = document.getElementById('cipherMethodRadioRichelieuLabel')!;
-    const feistelLabel: HTMLElement = document.getElementById('cipherMethodRadioFeistelLabel')!;
+    const richelieuLabel: HTMLElement = document.getElementById('cipherMethodCheckboxRichelieuLabel')!;
+    const feistelLabel: HTMLElement = document.getElementById('cipherMethodCheckboxFeistelLabel')!;
 
-    richelieuRadio.addEventListener('change', () => {
-        feistelInfo.classList.add('d-none');
-        richelieuInfo.classList.remove('d-none');
-        feistelLabel.classList.remove('fw-bold');
-        richelieuLabel.classList.add('fw-bold');
-    });
-    feistelRadio.addEventListener('change', () => {
-        richelieuInfo.classList.add('d-none');
-        feistelInfo.classList.remove('d-none');
-        richelieuLabel.classList.remove('fw-bold');
-        feistelLabel.classList.add('fw-bold');
+    cipherMethodCheckbox.addEventListener('change', function () {
+        if (this.checked) {
+            richelieuInfo.classList.add('hidden');
+            feistelInfo.classList.remove('hidden');
+            richelieuLabel.classList.remove('font-bold');
+            feistelLabel.classList.add('font-bold');
+        } else {
+            feistelInfo.classList.add('hidden');
+            richelieuInfo.classList.remove('hidden');
+            feistelLabel.classList.remove('font-bold');
+            richelieuLabel.classList.add('font-bold');
+        }
     });
 }
 
