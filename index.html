@@ -1,45 +1,78 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>БПиД №2.7</title>
-    <link href="/src/styles.scss" rel="stylesheet">
-</head>
-<body>
-<h1>Лабораторная работа по БПиД №2<br>вариант 7</h1>
-<div class="container-fluid">
-    <form name="cipherForm" class="row ">
-        <div class="col-3">
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="cipherMethodRadio" id="cipherMethodRadioRichelieu" checked>
-                <label class="form-check-label fw-bold" for="cipherMethodRadioRichelieu" id="cipherMethodRadioRichelieuLabel">Шифр Ришелье</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="cipherMethodRadio" id="cipherMethodRadioFeistel">
-                <label class="form-check-label" for="cipherMethodRadioFeistel" id="cipherMethodRadioFeistelLabel">Сеть Фейстеля</label>
-            </div>
-            <br>
-            <div id="richelieuInfo">
-                <p>Инфа о шифре Ришелье</p>
-            </div>
-            <div id="feistelInfo" class="d-none">
-                <p>Инфа о сети Фейстеля</p>
-            </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>БПиД №2.7</title>
+        <link href="/src/index.css" rel="stylesheet" />
+    </head>
+    <body>
+        <header class="p-4">
+            <h1 class="text-center font-medium sm:text-2xl">
+                Лабораторная работа по БПиД №2<br />вариант 7
+            </h1>
+        </header>
+        <div>
+            <form name="cipherForm" class="mx-5 flex flex-wrap sm:space-x-5">
+                <div class="w-full pb-10 md:w-80">
+                    <label class="label cursor-pointer justify-center space-x-2">
+                        <span class="label-text font-bold" id="cipherMethodCheckboxRichelieuLabel">
+                            Шифр Ришелье
+                        </span>
+                        <input
+                            type="checkbox"
+                            id="cipherMethodCheckbox"
+                            class="[--tglbg:rgb(0.25 0.02 252.0)] toggle border-base-content bg-base-content hover:bg-base-content"
+                        />
+                        <span class="label-text" id="cipherMethodCheckboxFeistelLabel">
+                            Сеть Фейстеля
+                        </span>
+                    </label>
+                    <div id="richelieuInfo">
+                        <p>Инфа о шифре Ришелье</p>
+                    </div>
+                    <div id="feistelInfo" class="hidden">
+                        <p>Инфа о сети Фейстеля</p>
+                    </div>
+                </div>
+                <div
+                    class="flex w-full flex-wrap space-y-10 sm:w-auto sm:grow sm:space-x-5 sm:space-y-0"
+                >
+                    <div class="flex w-full flex-col space-y-3 sm:w-auto sm:grow">
+                        <textarea
+                            class="textarea textarea-bordered h-64 resize-none sm:h-96"
+                            id="sourceText"
+                            name="sourceText"
+                            placeholder="Исходный текст"
+                        ></textarea>
+                        <div
+                            class="tooltip"
+                            data-tip="Из этого файла будет считываться (и в него же записываться) исходный текст"
+                        >
+                            <input type="file" class="file-input file-input-sm" />
+                        </div>
+                    </div>
+                    <div class="flex w-full flex-col space-y-3 sm:w-auto sm:grow">
+                        <textarea
+                            class="textarea textarea-bordered h-64 resize-none sm:h-96"
+                            id="encryptedText"
+                            name="encryptedText"
+                            placeholder="Закодированный текст"
+                        ></textarea>
+                        <div
+                            class="tooltip"
+                            data-tip="В этот файл будет записываться (и из него же считываться) закодированный текст"
+                        >
+                            <input type="file" class="file-input file-input-sm" />
+                        </div>
+                    </div>
+                </div>
+                <div class="w-80"></div>
+            </form>
         </div>
-        <div class="col-4">
-                <textarea id="sourceText" name="sourceText" rows="15" class="form-control" type="text"
-                          placeholder="Исходный текст"
-                          multiple></textarea>
-            <button class="btn btn-primary">Загрузить из файла</button>
-        </div>
-        <div class="col-4">
-                <textarea id="encryptedText" name="encryptedText" rows="15" class="form-control" type="text"
-                          placeholder="Закодированный текст" multiple></textarea>
-            <button class="btn btn-primary">Загрузить из файла</button>
-        </div>
-    </form>
-</div>
-<script type="module" src="/src/index.ts"></script>
-</body>
+        <footer class="footer footer-center p-5 text-base-content">
+            <p>© Scorpi-ON — 2024</p>
+        </footer>
+        <script type="module" src="/src/index.ts"></script>
+    </body>
 </html>
