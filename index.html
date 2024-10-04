@@ -18,7 +18,7 @@
                 Лабораторная работа по БПиД №2<br />вариант 7
             </h1>
             <button
-                id="themeSwitcherButton"
+                id="switchThemeButton"
                 class="btn absolute right-0 top-10 border-transparent bg-transparent text-2xl hover:border-transparent hover:bg-transparent sm:top-6 sm:text-3xl lg:right-6"
             >
                 ☀️
@@ -34,17 +34,40 @@
                         <input
                             type="checkbox"
                             id="cipherMethodCheckbox"
+                            name="cipherMethodCheckbox"
                             class="[--tglbg:rgb(0.25 0.02 252.0)] toggle border-base-content bg-base-content hover:bg-base-content"
                         />
                         <span class="label-text" id="cipherMethodCheckboxFeistelLabel">
                             Сеть Фейстеля
                         </span>
                     </label>
-                    <div id="richelieuInfo">
-                        <p>Инфа о шифре Ришелье</p>
+                    <div id="richelieuInfo" class="flex flex-col">
+                        <div class="">
+                            <span>Размер сетки:</span>
+                            <input
+                                type="number"
+                                name="richelieuGridSize"
+                                id="richelieuGridSizeHeight"
+                                class="input input-bordered h-9 w-9 p-2"
+                                min="2"
+                                max="10"
+                                value="5"
+                            />
+                            <span>x</span>
+                            <input
+                                type="number"
+                                name="richelieuGridSize"
+                                id="richelieuGridSizeWidth"
+                                class="input input-bordered h-9 w-9 p-2"
+                                min="2"
+                                max="10"
+                                value="5"
+                            />
+                        </div>
                     </div>
                     <div id="feistelInfo" class="hidden">
-                        <p>Инфа о сети Фейстеля</p>
+                        <p>Схема сети:</p>
+                        <img class="block my-4 w-60 rounded-xl" src="src/res/feistel-network.png" alt="Схема сети Фейстеля">
                     </div>
                 </div>
                 <div
@@ -62,6 +85,7 @@
                             data-tip="Из этого файла будет считываться (и в него же записываться) исходный текст"
                         >
                             <input
+                                id="sourceFileInput"
                                 type="file"
                                 class="file-input file-input-bordered file-input-sm w-full"
                             />
@@ -79,6 +103,7 @@
                             data-tip="В этот файл будет записываться (и из него же считываться) закодированный текст"
                         >
                             <input
+                                id="encryptedFileInput"
                                 type="file"
                                 class="file-input file-input-bordered file-input-sm w-full"
                             />
