@@ -1,10 +1,10 @@
 import { blocksToText, textToBlocks } from './block_operations';
 import { describe, test, expect, jest, afterEach } from '@jest/globals';
-import * as bitwiseOperations from './bitwise_operations';
-import { Bit } from './bitwise_operations';
+import { Bit, numberToBits, bitsToNumber } from './bitwise_operations';
 
-const numberToBitsMock = jest.spyOn(bitwiseOperations, 'numberToBits');
-const bitsToNumberMock = jest.spyOn(bitwiseOperations, 'bitsToNumber');
+jest.mock('./bitwise_operations');
+const numberToBitsMocked = jest.mocked(numberToBits, { shallow: true });
+const bitsToNumberMocked = jest.mocked(bitsToNumber, { shallow: true });
 
 describe('Функции операций над текстом и блоками', () => {
     afterEach(() => {
@@ -94,8 +94,8 @@ describe('Функции операций над текстом и блокам�
         ])(
             'Если передан текст, то возвращает его разбиение на блоки',
             (text: string, bitSets: Bit[][], expected: bigint[]) => {
-                bitSets.forEach((bitSet) => numberToBitsMock.mockReturnValueOnce(bitSet));
-                expected.forEach((block) => bitsToNumberMock.mockReturnValueOnce(block));
+                bitSets.forEach((bitSet) => numberToBitsMocked.mockReturnValueOnce(bitSet));
+                expected.forEach((block) => bitsToNumberMocked.mockReturnValueOnce(block));
 
                 const result = textToBlocks(text);
                 expect(result).toStrictEqual(expected);
@@ -239,8 +239,8 @@ describe('Функции операций над текстом и блокам�
         ])(
             'Если переданы блоки, то возвращает текст, собранный из них',
             (blocks: bigint[], blockBitSets: Bit[][], bytes: bigint[], expected: string) => {
-                blockBitSets.forEach((bitSet) => numberToBitsMock.mockReturnValueOnce(bitSet));
-                bytes.forEach((byte) => bitsToNumberMock.mockReturnValueOnce(byte));
+                blockBitSets.forEach((bitSet) => numberToBitsMocked.mockReturnValueOnce(bitSet));
+                bytes.forEach((byte) => bitsToNumberMocked.mockReturnValueOnce(byte));
 
                 const result = blocksToText(blocks);
                 expect(result).toMatch(new RegExp(' *' + expected));
