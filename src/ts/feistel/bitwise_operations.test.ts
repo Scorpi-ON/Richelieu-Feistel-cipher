@@ -84,8 +84,8 @@ describe('Функции операций с блоками, потоками и
     describe('blockToThreads', () => {
         test.each([
             [
-                BigInt('0b' + '1'.repeat(BLOCK_SIZE)),
-                Array<bigint>(THREAD_COUNT).fill(BigInt('0b' + '1'.repeat(THREAD_SIZE))),
+                (1n << BigInt(BLOCK_SIZE)) - 1n,
+                Array<bigint>(THREAD_COUNT).fill((1n << BigInt(THREAD_SIZE)) - 1n),
             ],
             [
                 BigInt(
@@ -96,9 +96,9 @@ describe('Функции операций с блоками, потоками и
                         '11110100111100001110010001100101'
                 ),
                 [
-                    BigInt('0b' + '0'.repeat(THREAD_SIZE)),
+                    0n,
                     BigInt(0b10100101111000010110000101110101),
-                    BigInt('0b' + '1'.repeat(THREAD_SIZE)),
+                    (1n << BigInt(THREAD_SIZE)) - 1n,
                     BigInt(0b11110100111100001110010001100101),
                 ],
             ],
@@ -111,14 +111,14 @@ describe('Функции операций с блоками, потоками и
     describe('threadsToBlock', () => {
         test.each([
             [
-                Array<bigint>(THREAD_COUNT).fill(BigInt('0b' + '1'.repeat(THREAD_SIZE))),
-                BigInt('0b' + '1'.repeat(BLOCK_SIZE)),
+                Array<bigint>(THREAD_COUNT).fill((1n << BigInt(THREAD_SIZE)) - 1n),
+                (1n << BigInt(BLOCK_SIZE)) - 1n,
             ],
             [
                 [
-                    BigInt('0b' + '0'.repeat(THREAD_SIZE)),
+                    0n,
                     BigInt(0b10100101111000010110000101110101),
-                    BigInt('0b' + '1'.repeat(THREAD_SIZE)),
+                    (1n << BigInt(THREAD_SIZE)) - 1n,
                     BigInt(0b11110100111100001110010001100101),
                 ],
                 BigInt(

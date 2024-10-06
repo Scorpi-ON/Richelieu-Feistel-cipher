@@ -7,7 +7,6 @@ export const BLOCK_SIZE = THREAD_SIZE * THREAD_COUNT;
 export type Bit = 0 | 1;
 
 export function numberToBits(num: number, bitCount: number): Bit[];
-// Перегрузка для bigint
 export function numberToBits(num: bigint, bitCount: number): Bit[];
 export function numberToBits(num: number | bigint, bitCount: number): Bit[] {
     if (num < 0) {
