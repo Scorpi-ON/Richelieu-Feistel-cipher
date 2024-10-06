@@ -1,10 +1,4 @@
-export const BYTE_SIZE = 8;
-export const THREAD_SIZE = BYTE_SIZE << 2;
-export const THREAD_COUNT = 4;
-export const THREAD_MASK = (1n << BigInt(THREAD_SIZE)) - 1n;
-export const BLOCK_SIZE = THREAD_SIZE * THREAD_COUNT;
-
-export type Bit = 0 | 1;
+import { Bit, BLOCK_SIZE, THREAD_SIZE, THREAD_COUNT, THREAD_MASK } from './constants.ts';
 
 export function numberToBits(num: number, bitCount: number): Bit[];
 export function numberToBits(num: bigint, bitCount: number): Bit[];
@@ -35,33 +29,39 @@ export function numberToBits(num: number | bigint, bitCount: number): Bit[] {
     return bits;
 }
 
-export function bitsToNumber(bits: Bit[]): bigint {
-    let num = 0n;
-    bits.reverse().forEach((bit, index) => {
+export function bitsToNumber(bits: readonly Bit[]): bigint {
+    return bits.reduce((num, bit, index) => {
+        const reversedIndex = bits.length - index - 1;
         if (bit === 1) {
-            num |= BigInt(bit) << BigInt(index);
+            num |= BigInt(bit) << BigInt(reversedIndex);
         }
-    });
-    return num;
+        return num;
+    }, 0n);
 }
 
 export function blockToThreads(block: bigint): bigint[] {
-    let threads: bigint[] = [];
-    for (let offset = BLOCK_SIZE - THREAD_SIZE; offset >= 0; offset -= THREAD_SIZE) {
-        const thread = (block >> BigInt(offset)) & THREAD_MASK;
-        threads.push(thread);
+    if (block < 0n || block >= 1n << BigInt(BLOCK_SIZE)) {
+        throw new Error(`Блок должен быть числом от 0 до 2^${BLOCK_SIZE} - 1`);
+    }
+
+    let threads: bigint[] = Array(THREAD_COUNT);
+    for (let i = 0, offset = BLOCK_SIZE - THREAD_SIZE; offset >= 0; ++i, offset -= THREAD_SIZE) {
+        threads[i] = (block >> BigInt(offset)) & THREAD_MASK;
     }
     return threads;
 }
 
-export function threadsToBlock(threads: bigint[]): bigint {
-    let block = 0n;
-    let offset = 0;
-    threads.reverse().forEach((thread) => {
+export function threadsToBlock(threads: readonly bigint[]): bigint {
+    let offset = BLOCK_SIZE;
+    return threads.reduce((block, thread) => {
+        if (thread < 0 || thread >= 1n << BigInt(THREAD_SIZE)) {
+            throw new Error(`Поток должен быть числом от 0 до 2^${THREAD_SIZE} - 1`);
+        }
+
+        offset -= THREAD_SIZE;
         if (thread > 0) {
             block |= thread << BigInt(offset);
         }
-        offset += THREAD_SIZE;
-    });
-    return block;
+        return block;
+    }, 0n);
 }

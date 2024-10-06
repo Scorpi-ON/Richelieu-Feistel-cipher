@@ -1,14 +1,6 @@
 import { describe, test, expect } from '@jest/globals';
-import {
-    Bit,
-    numberToBits,
-    bitsToNumber,
-    blockToThreads,
-    threadsToBlock,
-    BLOCK_SIZE,
-    THREAD_SIZE,
-    THREAD_COUNT,
-} from './bitwise_operations';
+import { numberToBits, bitsToNumber, blockToThreads, threadsToBlock } from './bitwise_operations';
+import { Bit, BLOCK_SIZE, THREAD_SIZE, THREAD_COUNT } from './constants';
 
 describe('Функции операций с блоками, потоками и битами', () => {
     describe('numberToBits', () => {
