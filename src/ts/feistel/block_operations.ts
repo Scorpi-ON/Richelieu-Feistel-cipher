@@ -32,7 +32,7 @@ export function textToBlocks(text: string): bigint[] {
     return blocks;
 }
 
-export function blocksToText(blocks: bigint[]): string {
+export function blocksToText(blocks: readonly bigint[]): string {
     let textBytes = new Uint8Array(BLOCK_BYTE_SIZE * blocks.length);
     const bits: Bit[] = blocks.map((block) => numberToBits(block, BLOCK_SIZE)).flat();
 

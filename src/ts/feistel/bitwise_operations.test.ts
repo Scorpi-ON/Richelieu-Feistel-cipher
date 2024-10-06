@@ -11,7 +11,7 @@ describe('Функции операций с блоками, потоками и
             [30, 5, [1, 1, 1, 1, 0] as Bit[]],
         ])(
             'Если передано число, то возвращает его побитовое представление с нужным количеством нулей-заполнителей в начале',
-            (number: number, bitCount: number, expected: Bit[]) => {
+            (number: number, bitCount: number, expected: readonly Bit[]) => {
                 const result = numberToBits(number, bitCount);
                 expect(result).toStrictEqual(expected);
             }
@@ -26,7 +26,7 @@ describe('Функции операций с блоками, потоками и
             ],
         ])(
             'Если передано большое число, то возвращает его побитовое представление с нужным количеством нулей-заполнителей в начале',
-            (number: bigint, bitCount: number, expected: Bit[]) => {
+            (number: bigint, bitCount: number, expected: readonly Bit[]) => {
                 const result = numberToBits(number, bitCount);
                 expect(result).toStrictEqual(expected);
             }
@@ -66,7 +66,7 @@ describe('Функции операций с блоками, потоками и
             ],
         ])(
             'Если передан массив битов, то возвращает их числовое представление',
-            (bits: Bit[], expected: bigint) => {
+            (bits: readonly Bit[], expected: bigint) => {
                 const result = bitsToNumber(bits);
                 expect(result).toStrictEqual(expected);
             }
@@ -94,10 +94,13 @@ describe('Функции операций с блоками, потоками и
                     BigInt(0b11110100111100001110010001100101),
                 ],
             ],
-        ])('Если передан блок, то возвращает его потоки', (block: bigint, expected: bigint[]) => {
-            const result = blockToThreads(block);
-            expect(result).toStrictEqual(expected);
-        });
+        ])(
+            'Если передан блок, то возвращает его потоки',
+            (block: bigint, expected: readonly bigint[]) => {
+                const result = blockToThreads(block);
+                expect(result).toStrictEqual(expected);
+            }
+        );
     });
 
     describe('threadsToBlock', () => {
@@ -123,7 +126,7 @@ describe('Функции операций с блоками, потоками и
             ],
         ])(
             'Если переданы потоки, то возвращает блок из них',
-            (threads: bigint[], expected: bigint) => {
+            (threads: readonly bigint[], expected: bigint) => {
                 const result = threadsToBlock(threads);
                 expect(result).toStrictEqual(expected);
             }
