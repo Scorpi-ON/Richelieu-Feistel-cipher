@@ -26,7 +26,11 @@ function syncTextChange(
     if (mode === 'source') {
         const sourceText = sourceTextarea.value;
         if (isFeistelCipherMethod) {
-            encryptedTextarea.value = feistelCipher.encrypt(sourceText);
+            encryptedTextarea.value = feistelCipher.processText(
+                'encrypt',
+                sourceText,
+                Array(8).fill(0n)
+            );
         } else {
             if (richelieuFreeCellsIndexes.length > 0) {
                 encryptedTextarea.value = richelieuCipher.encrypt(
@@ -41,7 +45,11 @@ function syncTextChange(
     } else {
         const encryptedText = encryptedTextarea.value;
         if (isFeistelCipherMethod) {
-            sourceTextarea.value = feistelCipher.decrypt(encryptedText);
+            sourceTextarea.value = feistelCipher.processText(
+                'decrypt',
+                encryptedText,
+                Array(8).fill(0n)
+            );
         } else {
             if (richelieuFreeCellsIndexes.length > 0) {
                 sourceTextarea.value = richelieuCipher.decrypt(
