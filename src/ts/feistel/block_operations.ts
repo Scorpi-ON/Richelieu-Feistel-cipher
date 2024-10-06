@@ -1,16 +1,16 @@
 import { Bit, BYTE_SIZE, BLOCK_SIZE } from './constants.ts';
 import { numberToBits, bitsToNumber } from './bitwise_operations.ts';
-import utf16 from './utf16.ts';
+import utf32 from './utf32.ts';
 
 const BLOCK_BYTE_SIZE = BLOCK_SIZE / BYTE_SIZE;
 
 function textToBlockBytes(text: string): number[] {
-    let textBytes: number[] = Array.from(utf16.encode(text));
+    let textBytes: number[] = Array.from(utf32.encode(text));
 
     const placeholderBytesCount = BLOCK_BYTE_SIZE - (textBytes.length % BLOCK_BYTE_SIZE);
     if (placeholderBytesCount < BLOCK_BYTE_SIZE) {
-        const placeholderBytes: number[] = Array(placeholderBytesCount / 2)
-            .fill(utf16.WHITESPACE_CODES)
+        const placeholderBytes: number[] = Array(placeholderBytesCount / utf32.BYTES_PER_ELEMENT)
+            .fill(utf32.WHITESPACE_CODES)
             .flat();
         textBytes = [...placeholderBytes, ...textBytes];
     }
@@ -23,7 +23,7 @@ export function textToBlocks(text: string): bigint[] {
     const bits: Bit[] = textBytes.map((byte) => numberToBits(byte, BYTE_SIZE)).flat();
 
     const blockCount = bits.length / BLOCK_SIZE;
-    const blocks = Array<bigint>(blockCount);
+    const blocks: bigint[] = Array(blockCount);
     for (let index = 0, offset = 0; index < blockCount; ++index) {
         const blockBits = bits.slice(offset, (offset += BLOCK_SIZE));
         blocks[index] = bitsToNumber(blockBits);
@@ -43,5 +43,5 @@ export function blocksToText(blocks: readonly bigint[]): string {
         textBytes[index] = Number(decodedTextByte);
     }
 
-    return utf16.decode(textBytes);
+    return utf32.decode(textBytes);
 }

@@ -75,38 +75,56 @@
                 >
                     <div class="flex w-full flex-col space-y-3 sm:w-auto sm:grow">
                         <textarea
-                            class="textarea textarea-bordered h-48 resize-none sm:h-96"
+                            class="textarea textarea-bordered h-48 resize-none sm:h-96 w-full"
                             id="sourceText"
                             name="sourceText"
                             placeholder="Исходный текст"
                         ></textarea>
-                        <div
-                            class="tooltip"
-                            data-tip="Из этого файла будет считываться (и в него же записываться) исходный текст"
-                        >
-                            <input
-                                id="sourceFileInput"
-                                type="file"
-                                class="file-input file-input-bordered file-input-sm w-full"
-                            />
+                        <div class="flex justify-center space-x-5 mx-6">
+                            <div
+                                class="tooltip"
+                                data-tip="Загрузите исходный текст для шифровки из файла"
+                            >
+                                <button class="btn" type="button" onclick="document.getElementById('sourceFileInput').click();">Загрузить</button>
+                                <input
+                                    id="sourceFileInput"
+                                    type="file"
+                                    class="file-input file-input-bordered file-input-sm hidden"
+                                />
+                            </div>
+                            <div
+                                class="tooltip"
+                                data-tip="Сохраните расшифрованный текст в файл"
+                            >
+                                <button class="btn" type="button" onclick="">Сохранить</button>
+                            </div>
                         </div>
                     </div>
                     <div class="flex w-full flex-col space-y-3 sm:w-auto sm:grow">
                         <textarea
-                            class="textarea textarea-bordered h-48 resize-none sm:h-96"
+                            class="textarea textarea-bordered h-48 resize-none sm:h-96 w-full"
                             id="encryptedText"
                             name="encryptedText"
                             placeholder="Закодированный текст"
                         ></textarea>
-                        <div
-                            class="tooltip"
-                            data-tip="В этот файл будет записываться (и из него же считываться) закодированный текст"
-                        >
-                            <input
-                                id="encryptedFileInput"
-                                type="file"
-                                class="file-input file-input-bordered file-input-sm w-full"
-                            />
+                        <div class="flex justify-center space-x-5 mx-6">
+                            <div
+                                class="tooltip"
+                                data-tip="Загрузите зашифрованный текст для расшифровки"
+                            >
+                                <button class="btn" type="button" onclick="document.getElementById('encryptedFileInput').click();">Загрузить</button>
+                                <input
+                                    id="encryptedFileInput"
+                                    type="file"
+                                    class="file-input file-input-bordered file-input-sm hidden"
+                                />
+                            </div>
+                            <div
+                                class="tooltip"
+                                data-tip="Сохраните зашифрованный текст в файл"
+                            >
+                                <button class="btn" type="button" onclick="">Сохранить</button>
+                            </div>
                         </div>
                     </div>
                 </div>
