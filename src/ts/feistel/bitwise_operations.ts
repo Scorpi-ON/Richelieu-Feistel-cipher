@@ -11,7 +11,7 @@ export function numberToBits(num: number | bigint, bitCount: number): Bit[] {
         );
     }
 
-    let bits = Array<Bit>(bitCount).fill(0);
+    let bits: Bit[] = Array(bitCount).fill(0);
     let i = bitCount - 1;
 
     if (typeof num === 'bigint') {

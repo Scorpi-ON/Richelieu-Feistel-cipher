@@ -77,7 +77,7 @@ describe('Функции операций с блоками, потоками и
         test.each([
             [
                 (1n << BigInt(BLOCK_SIZE)) - 1n,
-                Array<bigint>(THREAD_COUNT).fill((1n << BigInt(THREAD_SIZE)) - 1n),
+                Array(THREAD_COUNT).fill((1n << BigInt(THREAD_SIZE)) - 1n),
             ],
             [
                 BigInt(
@@ -103,7 +103,7 @@ describe('Функции операций с блоками, потоками и
     describe('threadsToBlock', () => {
         test.each([
             [
-                Array<bigint>(THREAD_COUNT).fill((1n << BigInt(THREAD_SIZE)) - 1n),
+                Array(THREAD_COUNT).fill((1n << BigInt(THREAD_SIZE)) - 1n),
                 (1n << BigInt(BLOCK_SIZE)) - 1n,
             ],
             [
