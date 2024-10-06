@@ -1,19 +1,29 @@
-import { Bit, BYTE_SIZE, BLOCK_SIZE, numberToBits, bitsToNumber } from './bitwise_operations.ts';
+import { Bit, BYTE_SIZE, BLOCK_SIZE } from './constants.ts';
+import { numberToBits, bitsToNumber } from './bitwise_operations.ts';
+import utf16 from './utf16.ts';
 
-export function textToBlocks(text: string): bigint[] {
-    const encodedText: number[] = Array.from(new TextEncoder().encode(text));
-    let bits = encodedText.reduce<Bit[]>(
-        (accumulator, byte) => [...accumulator, ...numberToBits(byte, BYTE_SIZE)],
-        []
-    );
+const BLOCK_BYTE_SIZE = BLOCK_SIZE / BYTE_SIZE;
 
-    const placeholdersCount = BLOCK_SIZE - (bits.length % BLOCK_SIZE);
-    if (placeholdersCount < BLOCK_SIZE) {
-        bits = [...Array(placeholdersCount).fill(0), ...bits];
+function textToBlockBytes(text: string): number[] {
+    let textBytes: number[] = Array.from(utf16.encode(text));
+
+    const placeholderBytesCount = BLOCK_BYTE_SIZE - (textBytes.length % BLOCK_BYTE_SIZE);
+    if (placeholderBytesCount < BLOCK_BYTE_SIZE) {
+        const placeholderBytes: number[] = Array(placeholderBytesCount / 2)
+            .fill(utf16.WHITESPACE_CODES)
+            .flat();
+        textBytes = [...placeholderBytes, ...textBytes];
     }
 
+    return textBytes;
+}
+
+export function textToBlocks(text: string): bigint[] {
+    const textBytes: number[] = textToBlockBytes(text);
+    const bits: Bit[] = textBytes.map((byte) => numberToBits(byte, BYTE_SIZE)).flat();
+
     const blockCount = bits.length / BLOCK_SIZE;
-    const blocks = Array<bigint>(blockCount).fill(0n);
+    const blocks = Array<bigint>(blockCount);
     for (let index = 0, offset = 0; index < blockCount; ++index) {
         const blockBits = bits.slice(offset, (offset += BLOCK_SIZE));
         blocks[index] = bitsToNumber(blockBits);
@@ -23,18 +33,15 @@ export function textToBlocks(text: string): bigint[] {
 }
 
 export function blocksToText(blocks: bigint[]): string {
-    let decodedText = new Uint8Array((BLOCK_SIZE / BYTE_SIZE) * blocks.length);
-    const bits = blocks.reduce<Bit[]>(
-        (accumulator, block) => [...accumulator, ...numberToBits(block, BLOCK_SIZE)],
-        []
-    );
+    let textBytes = new Uint8Array(BLOCK_BYTE_SIZE * blocks.length);
+    const bits: Bit[] = blocks.map((block) => numberToBits(block, BLOCK_SIZE)).flat();
 
     for (let index = 0, offset = 0; offset < bits.length; ++index) {
         const byteBits = bits.slice(offset, (offset += BYTE_SIZE));
         const decodedTextByte = bitsToNumber(byteBits);
 
-        decodedText[index] = Number(decodedTextByte);
+        textBytes[index] = Number(decodedTextByte);
     }
 
-    return new TextDecoder().decode(decodedText);
+    return utf16.decode(textBytes);
 }
