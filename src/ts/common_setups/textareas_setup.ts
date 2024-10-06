@@ -75,7 +75,9 @@ function syncScroll(source: HTMLTextAreaElement, target: HTMLTextAreaElement): v
 }
 
 function fromFileToTextarea(fileInput: HTMLInputElement, textarea: HTMLTextAreaElement): void {
-    if (fileInput.files!.length === 0) return;
+    if (fileInput.files!.length === 0) {
+        return;
+    }
     const file = fileInput.files![0];
     const reader = new FileReader();
     reader.onload = (event): void => {
@@ -103,6 +105,6 @@ export default function setupTextareas(): void {
     encryptedTextarea.onscroll = (): void => syncScroll(encryptedTextarea, sourceTextarea);
 
     sourceFileInput.onchange = (): void => fromFileToTextarea(sourceFileInput, sourceTextarea);
-    encryptedTextarea.onchange = (): void =>
+    encryptedFileInput.onchange = (): void =>
         fromFileToTextarea(encryptedFileInput, encryptedTextarea);
 }
