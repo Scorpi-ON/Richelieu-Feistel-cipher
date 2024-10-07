@@ -1,6 +1,6 @@
 import { describe, test, expect } from '@jest/globals';
-import { numberToBits, bitsToNumber, blockToThreads, threadsToBlock } from './bitwise_operations';
-import { Bit, BLOCK_SIZE, THREAD_SIZE, THREAD_COUNT } from './constants';
+import { numberToBits, bitsToNumber, blockToThreads, threadsToBlock } from '../../src/ts/feistel/bitwise_operations';
+import { Bit, BLOCK_SIZE, THREAD_SIZE, THREAD_COUNT } from '../../src/ts/feistel/constants';
 
 describe('Функции операций с блоками, потоками и битами', () => {
     describe('numberToBits', () => {

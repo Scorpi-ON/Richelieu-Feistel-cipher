@@ -1,6 +1,6 @@
 import { Bit, BYTE_SIZE, BLOCK_SIZE } from './constants.ts';
 import { numberToBits, bitsToNumber } from './bitwise_operations.ts';
-import utf32 from './utf32.ts';
+import utf32 from '../utils/utf32.ts';
 
 const BLOCK_BYTE_SIZE = BLOCK_SIZE / BYTE_SIZE;
 
