@@ -1,6 +1,8 @@
 import * as richelieuCipher from '../richelieu/cipher.ts';
 import * as feistelCipher from '../feistel/cipher.ts';
 
+const FILE_READER = new FileReader();
+
 function syncTextChange(
     cipherForm: HTMLFormElement,
     sourceTextarea: HTMLTextAreaElement,
@@ -79,22 +81,45 @@ function fromFileToTextarea(fileInput: HTMLInputElement, textarea: HTMLTextAreaE
         return;
     }
     const file = fileInput.files![0];
-    const reader = new FileReader();
-    reader.onload = (event): void => {
+    FILE_READER.onload = (event): void => {
         textarea.value = event.target!.result as string;
         textarea.dispatchEvent(new Event('input'));
+        fileInput.value = '';
     };
-    reader.readAsText(file);
+    FILE_READER.readAsText(file, 'utf-32');
+}
+
+function fromTextareaToFile(textarea: HTMLTextAreaElement, filename: string): void {
+    const text: string = textarea.value;
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-32' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }
 
 export default function setupTextareas(): void {
     const cipherForm: HTMLFormElement = document.forms.namedItem('cipherForm')!;
     const sourceTextarea = cipherForm.elements.namedItem('sourceText') as HTMLTextAreaElement;
     const encryptedTextarea = cipherForm.elements.namedItem('encryptedText') as HTMLTextAreaElement;
-    const sourceFileInput = cipherForm.elements.namedItem('sourceFileInput') as HTMLInputElement;
-    const encryptedFileInput = cipherForm.elements.namedItem(
-        'encryptedFileInput'
+    const uploadSourceFileInput = cipherForm.elements.namedItem(
+        'uploadSourceFileInput'
     ) as HTMLInputElement;
+    const uploadEncryptedFileInput = cipherForm.elements.namedItem(
+        'uploadEncryptedFileInput'
+    ) as HTMLInputElement;
+    const downloadSourceButton = cipherForm.elements.namedItem(
+        'downloadSourceButton'
+    ) as HTMLButtonElement;
+    const downloadEncryptedButton = cipherForm.elements.namedItem(
+        'downloadEncryptedButton'
+    ) as HTMLButtonElement;
 
     sourceTextarea.oninput = (): void =>
         syncTextChange(cipherForm, sourceTextarea, encryptedTextarea, 'source');
@@ -104,7 +129,12 @@ export default function setupTextareas(): void {
     sourceTextarea.onscroll = (): void => syncScroll(sourceTextarea, encryptedTextarea);
     encryptedTextarea.onscroll = (): void => syncScroll(encryptedTextarea, sourceTextarea);
 
-    sourceFileInput.onchange = (): void => fromFileToTextarea(sourceFileInput, sourceTextarea);
-    encryptedFileInput.onchange = (): void =>
-        fromFileToTextarea(encryptedFileInput, encryptedTextarea);
+    uploadSourceFileInput.onchange = (): void =>
+        fromFileToTextarea(uploadSourceFileInput, sourceTextarea);
+    uploadEncryptedFileInput.onchange = (): void =>
+        fromFileToTextarea(uploadEncryptedFileInput, encryptedTextarea);
+
+    downloadSourceButton.onclick = (): void => fromTextareaToFile(sourceTextarea, 'source.txt');
+    downloadEncryptedButton.onclick = (): void =>
+        fromTextareaToFile(encryptedTextarea, 'encrypted.txt');
 }

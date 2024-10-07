@@ -85,9 +85,9 @@
                                 class="tooltip"
                                 data-tip="Загрузите исходный текст для шифровки из файла"
                             >
-                                <button class="btn" type="button" onclick="document.getElementById('sourceFileInput').click();">Загрузить</button>
+                                <button class="btn" type="button" onclick="document.getElementById('uploadSourceFileInput').click();">Загрузить</button>
                                 <input
-                                    id="sourceFileInput"
+                                    id="uploadSourceFileInput"
                                     type="file"
                                     class="file-input file-input-bordered file-input-sm hidden"
                                 />
@@ -96,7 +96,7 @@
                                 class="tooltip"
                                 data-tip="Сохраните расшифрованный текст в файл"
                             >
-                                <button class="btn" type="button" onclick="">Сохранить</button>
+                                <button id="downloadSourceButton" class="btn" type="button" onclick="">Сохранить</button>
                             </div>
                         </div>
                     </div>
@@ -112,9 +112,9 @@
                                 class="tooltip"
                                 data-tip="Загрузите зашифрованный текст для расшифровки"
                             >
-                                <button class="btn" type="button" onclick="document.getElementById('encryptedFileInput').click();">Загрузить</button>
+                                <button class="btn" type="button" onclick="document.getElementById('uploadEncryptedFileInput').click();">Загрузить</button>
                                 <input
-                                    id="encryptedFileInput"
+                                    id="uploadEncryptedFileInput"
                                     type="file"
                                     class="file-input file-input-bordered file-input-sm hidden"
                                 />
@@ -123,7 +123,7 @@
                                 class="tooltip"
                                 data-tip="Сохраните зашифрованный текст в файл"
                             >
-                                <button class="btn" type="button" onclick="">Сохранить</button>
+                                <button id="downloadEncryptedButton" class="btn" type="button" onclick="">Сохранить</button>
                             </div>
                         </div>
                     </div>
