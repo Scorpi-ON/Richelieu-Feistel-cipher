@@ -1,3 +1,4 @@
+const NAME = 'utf-8';
 const WHITESPACE_CODES = [32, 0, 0, 0];
 const BYTES_PER_ELEMENT = Uint32Array.BYTES_PER_ELEMENT;
 
@@ -18,6 +19,7 @@ function decode(encoded: Uint8Array): string {
 export default {
     encode,
     decode,
+    NAME,
     WHITESPACE_CODES,
     BYTES_PER_ELEMENT,
 };

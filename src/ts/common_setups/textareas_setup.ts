@@ -1,5 +1,6 @@
 import * as richelieuCipher from '../richelieu/cipher.ts';
 import * as feistelCipher from '../feistel/cipher.ts';
+import utf32 from '../utils/utf32.ts';
 
 const FILE_READER = new FileReader();
 
@@ -86,12 +87,12 @@ function fromFileToTextarea(fileInput: HTMLInputElement, textarea: HTMLTextAreaE
         textarea.dispatchEvent(new Event('input'));
         fileInput.value = '';
     };
-    FILE_READER.readAsText(file, 'utf-32');
+    FILE_READER.readAsText(file, utf32.NAME);
 }
 
 function fromTextareaToFile(textarea: HTMLTextAreaElement, filename: string): void {
     const text: string = textarea.value;
-    const blob = new Blob([text], { type: 'text/plain;charset=utf-32' });
+    const blob = new Blob([text], { type: 'text/plain;charset=' + utf32.NAME });
     const url = URL.createObjectURL(blob);
 
     const a = document.createElement('a');
