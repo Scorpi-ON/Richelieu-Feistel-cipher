@@ -2,9 +2,9 @@ import { blockToThreads, threadsToBlock } from './bitwise_operations';
 import { textToBlocks, blocksToText } from './block_operations';
 import { encryptRound, decryptRound } from './round_funcs.ts';
 
-type ProcessingMode = 'encrypt' | 'decrypt';
+type ProcessMode = 'encrypt' | 'decrypt';
 
-export function processText(mode: ProcessingMode, text: string, keys: readonly bigint[]): string {
+export function processText(mode: ProcessMode, text: string, keys: readonly bigint[]): string {
     let blocks: bigint[] = textToBlocks(text);
     let roundFunc: (threads: bigint[], key: bigint) => bigint[];
     if (mode === 'decrypt') {

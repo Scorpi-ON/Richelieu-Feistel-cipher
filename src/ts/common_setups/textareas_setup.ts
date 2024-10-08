@@ -26,45 +26,35 @@ function syncTextChange(
         []
     );
 
-    if (mode === 'source') {
-        const sourceText = sourceTextarea.value;
-        if (isFeistelCipherMethod) {
-            encryptedTextarea.value = feistelCipher.processText(
-                'encrypt',
-                sourceText,
-                Array(8).fill(0n)
+    const text = mode === 'source' ? sourceTextarea.value : encryptedTextarea.value;
+    const processMode = mode === 'source' ? 'encrypt' : 'decrypt';
+    let result: string;
+    let textarea: HTMLTextAreaElement;
+
+    if (isFeistelCipherMethod) {
+        result = feistelCipher.processText(processMode, text, Array(8).fill(0n));
+        textarea = mode === 'source' ? encryptedTextarea : sourceTextarea;
+    } else if (richelieuFreeCellsIndexes.length > 0) {
+        if (mode === 'source') {
+            result = richelieuCipher.encrypt(
+                text,
+                richelieuGridCheckboxes.length,
+                richelieuFreeCellsIndexes
             );
+            textarea = encryptedTextarea;
         } else {
-            if (richelieuFreeCellsIndexes.length > 0) {
-                encryptedTextarea.value = richelieuCipher.encrypt(
-                    sourceText,
-                    richelieuGridCheckboxes.length,
-                    richelieuFreeCellsIndexes
-                );
-            } else {
-                encryptedTextarea.value = sourceText;
-            }
+            result = richelieuCipher.decrypt(
+                text,
+                richelieuGridCheckboxes.length,
+                richelieuFreeCellsIndexes
+            );
+            textarea = sourceTextarea;
         }
     } else {
-        const encryptedText = encryptedTextarea.value;
-        if (isFeistelCipherMethod) {
-            sourceTextarea.value = feistelCipher.processText(
-                'decrypt',
-                encryptedText,
-                Array(8).fill(0n)
-            );
-        } else {
-            if (richelieuFreeCellsIndexes.length > 0) {
-                sourceTextarea.value = richelieuCipher.decrypt(
-                    encryptedText,
-                    richelieuGridCheckboxes.length,
-                    richelieuFreeCellsIndexes
-                );
-            } else {
-                encryptedTextarea.value = encryptedText;
-            }
-        }
+        textarea = mode === 'source' ? encryptedTextarea : sourceTextarea;
+        result = text;
     }
+    textarea.value = result;
 }
 
 function syncScroll(source: HTMLTextAreaElement, target: HTMLTextAreaElement): void {

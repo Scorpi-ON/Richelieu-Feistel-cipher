@@ -8,15 +8,15 @@ function getRandomCharacter(): string {
 }
 
 export function encrypt(text: string, gridSize: number, freeCellsIndexes: number[]): string {
-    let encryptedText = '';
-    let textIndex = 0;
-
     if (freeCellsIndexes.length === 0) {
         throw INVALID_GRID_ERROR;
     }
 
+    let encryptedText = '';
+    let textIndex = 0;
+
     while (textIndex < text.length) {
-        for (let i = 0; i < gridSize && textIndex < text.length; ++i) {
+        for (let i = 0; i < gridSize; ++i) {
             if (freeCellsIndexes.includes(i)) {
                 encryptedText += text[textIndex];
                 ++textIndex;

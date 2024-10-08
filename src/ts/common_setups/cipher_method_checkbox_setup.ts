@@ -10,6 +10,7 @@ export default function setupCipherMethodCheckbox(): void {
         'cipherMethodCheckboxRichelieuLabel'
     )!;
     const feistelLabel: HTMLElement = document.getElementById('cipherMethodCheckboxFeistelLabel')!;
+    const sourceTextArea: HTMLElement = document.getElementById('sourceText')!;
 
     cipherMethodCheckbox.onchange = (): void => {
         const isFeistelChosen: boolean = cipherMethodCheckbox.checked;
@@ -19,5 +20,7 @@ export default function setupCipherMethodCheckbox(): void {
         feistelInfo.classList[methods[1]]('hidden');
         richelieuLabel.classList[methods[1]]('font-bold');
         feistelLabel.classList[methods[0]]('font-bold');
+
+        sourceTextArea.dispatchEvent(new Event('input'));
     };
 }
