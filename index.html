@@ -26,9 +26,9 @@
         </header>
         <main class="flex-grow">
             <form name="cipherForm" class="mx-5 flex flex-wrap">
-                <div class="w-full pb-10 lg:w-80">
+                <div class="w-full pb-10 md:w-80">
                     <label class="label cursor-pointer justify-center space-x-2">
-                        <span class="label-text font-bold" id="cipherMethodCheckboxRichelieuLabel">
+                        <span class="label-text text-right font-bold" id="cipherMethodCheckboxRichelieuLabel">
                             Шифр Ришелье
                         </span>
                         <input
@@ -37,12 +37,12 @@
                             name="cipherMethodCheckbox"
                             class="[--tglbg:rgb(0.25 0.02 252.0)] toggle border-base-content bg-base-content hover:bg-base-content"
                         />
-                        <span class="label-text" id="cipherMethodCheckboxFeistelLabel">
+                        <span class="label-text text-left" id="cipherMethodCheckboxFeistelLabel">
                             Сеть Фейстеля
                         </span>
                     </label>
                     <div id="richelieuInfo" class="flex flex-col">
-                        <div class="">
+                        <div>
                             <span>Размер сетки:</span>
                             <input
                                 type="number"
@@ -65,9 +65,32 @@
                             />
                         </div>
                     </div>
-                    <div id="feistelInfo" class="hidden">
-                        <p>Схема сети:</p>
-                        <img class="block my-4 w-60 rounded-xl bg-white" src="src/res/feistel-network.png" alt="Схема сети Фейстеля">
+                    <div id="feistelInfo" class="flex flex-col hidden space-y-3 max-w-[18.5rem]">
+                        <div class="space-y-1">
+                            <p>Схема сети:</p>
+                            <img class="block rounded-xl bg-white" src="src/res/feistel-network.png" alt="Схема сети Фейстеля">
+                        </div>
+                        <div>
+                            <span class="label inline">Количество раундов:</span>
+                            <input
+                                type="number"
+                                name="feistelRoundCount"
+                                id="feistelRoundCount"
+                                class="input input-bordered h-9 w-9 p-2"
+                                min="8"
+                                max="16"
+                                step="8"
+                                value="8"
+                            />
+                        </div>
+                        <div>
+                            <span class="label">Ключи шифрования:</span>
+                            <textarea
+                                class="textarea textarea-bordered resize-none w-40 h-64"
+                                id="keysText"
+                                name="keysText"
+                            ></textarea>
+                        </div>
                     </div>
                 </div>
                 <div
@@ -105,7 +128,7 @@
                             class="textarea textarea-bordered h-48 resize-none sm:h-96 w-full"
                             id="encryptedText"
                             name="encryptedText"
-                            placeholder="Закодированный текст"
+                            placeholder="Зашифрованный текст"
                         ></textarea>
                         <div class="flex justify-center space-x-5 mx-6">
                             <div

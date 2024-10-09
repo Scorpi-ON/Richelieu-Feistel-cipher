@@ -32,8 +32,16 @@ function syncTextChange(
     let textarea: HTMLTextAreaElement;
 
     if (isFeistelCipherMethod) {
-        result = feistelCipher.processText(processMode, text, Array(8).fill(0n));
-        textarea = mode === 'source' ? encryptedTextarea : sourceTextarea;
+        const keys = (document.getElementById('keysText')! as HTMLTextAreaElement).value
+            .split('\n')
+            .map(BigInt);
+        if (mode === 'source') {
+            result = utf32.base64Encode(feistelCipher.processText(processMode, text, keys));
+            textarea = encryptedTextarea;
+        } else {
+            result = feistelCipher.processText(processMode, utf32.base64Decode(text), keys);
+            textarea = sourceTextarea;
+        }
     } else if (richelieuFreeCellsIndexes.length > 0) {
         if (mode === 'source') {
             result = richelieuCipher.encrypt(
