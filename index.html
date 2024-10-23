@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Лабораторная работа по предмету «Безопасность программ и данных» №2.
+                Тема «Базовые алгоритмы шифрования. Использование симметричного алгоритма «Сеть Фейстеля» для шифрования файлов на диске».
+                Вариант №7: шифр Ришелье и сеть Фейстеля (схема №3 из методички)."
+        />
+        <title>БПиД №2.7</title>
+      <script type="module" crossorigin src="/Richelieu-Feistel-cipher/assets/index-9c838x05.js"></script>
+      <link rel="stylesheet" crossorigin href="/Richelieu-Feistel-cipher/assets/index-8IoH53yi.css">
+    </head>
+    <body class="flex flex-col min-h-screen space-y-8">
+        <header class="p-4">
+            <h1 class="text-center font-medium sm:text-2xl">
+                Лабораторная работа по БПиД №2<br />вариант 7
+            </h1>
+            <button
+                id="switchThemeButton"
+                class="btn absolute right-0 top-10 border-transparent bg-transparent text-2xl hover:border-transparent hover:bg-transparent sm:top-6 sm:text-3xl lg:right-6"
+            >
+                ☀️
+            </button>
+        </header>
+        <main class="flex-grow">
+            <form name="cipherForm" class="mx-5 flex flex-wrap">
+                <div class="w-full pb-10 md:w-80">
+                    <label class="label cursor-pointer justify-center space-x-2">
+                        <span class="label-text text-right font-bold" id="cipherMethodCheckboxRichelieuLabel">
+                            Шифр Ришелье
+                        </span>
+                        <input
+                            type="checkbox"
+                            id="cipherMethodCheckbox"
+                            name="cipherMethodCheckbox"
+                            class="[--tglbg:rgb(0.25 0.02 252.0)] toggle border-base-content bg-base-content hover:bg-base-content"
+                        />
+                        <span class="label-text text-left" id="cipherMethodCheckboxFeistelLabel">
+                            Сеть Фейстеля
+                        </span>
+                    </label>
+                    <div id="richelieuInfo" class="flex flex-col">
+                        <div>
+                            <span>Размер сетки:</span>
+                            <input
+                                type="number"
+                                name="richelieuGridSize"
+                                id="richelieuGridSizeHeight"
+                                class="input input-bordered h-9 w-9 p-2"
+                                min="2"
+                                max="10"
+                                value="5"
+                            />
+                            <span>x</span>
+                            <input
+                                type="number"
+                                name="richelieuGridSize"
+                                id="richelieuGridSizeWidth"
+                                class="input input-bordered h-9 w-9 p-2"
+                                min="2"
+                                max="10"
+                                value="5"
+                            />
+                        </div>
+                    </div>
+                    <div id="feistelInfo" class="flex flex-col hidden space-y-3 max-w-[18.5rem]">
+                        <div class="space-y-1">
+                            <p>Схема сети:</p>
+                            <img class="block rounded-xl bg-white" src="/Richelieu-Feistel-cipher/assets/feistel-network-C8kIF9iQ.png" alt="Схема сети Фейстеля">
+                        </div>
+                        <div class="flex flex-col w-44 space-y-2">
+                            <textarea
+                                class="textarea textarea-bordered resize-none h-64"
+                                id="keysText"
+                                name="keysText"
+                                placeholder="Ключи шифрования"
+                            ></textarea>
+                            <button id="genFeistelKeysBtn" class="btn btn-primary" type="button" onclick="">Сгенерировать</button>
+                            <button class="btn" type="button" onclick="document.getElementById('uploadSourceFileInput').click();">Загрузить</button>
+                            <input
+                                id="uploadKeysFileInput"
+                                type="file"
+                                class="file-input file-input-bordered file-input-sm hidden"
+                            />
+                            <button id="downloadKeysButton" class="btn" type="button" onclick="">Сохранить</button>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="flex w-full flex-wrap space-y-10 sm:w-auto sm:grow sm:space-x-5 sm:space-y-0"
+                >
+                    <div class="flex w-full flex-col space-y-2 sm:w-auto sm:grow">
+                        <textarea
+                            class="textarea textarea-bordered h-48 resize-none sm:h-96 w-full"
+                            id="sourceText"
+                            name="sourceText"
+                            placeholder="Исходный текст"
+                        ></textarea>
+                        <div class="flex justify-center space-x-5 mx-6">
+                            <div
+                                class="tooltip"
+                                data-tip="Загрузите исходный текст для шифровки из файла"
+                            >
+                                <button class="btn" type="button" onclick="document.getElementById('uploadSourceFileInput').click();">Загрузить</button>
+                                <input
+                                    id="uploadSourceFileInput"
+                                    type="file"
+                                    class="file-input file-input-bordered file-input-sm hidden"
+                                />
+                            </div>
+                            <div
+                                class="tooltip"
+                                data-tip="Сохраните расшифрованный текст в файл"
+                            >
+                                <button id="downloadSourceButton" class="btn" type="button" onclick="">Сохранить</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex w-full flex-col space-y-2 sm:w-auto sm:grow">
+                        <textarea
+                            class="textarea textarea-bordered h-48 resize-none sm:h-96 w-full"
+                            id="encryptedText"
+                            name="encryptedText"
+                            placeholder="Зашифрованный текст"
+                        ></textarea>
+                        <div class="flex justify-center space-x-5 mx-6">
+                            <div
+                                class="tooltip"
+                                data-tip="Загрузите зашифрованный текст для расшифровки"
+                            >
+                                <button class="btn" type="button" onclick="document.getElementById('uploadEncryptedFileInput').click();">Загрузить</button>
+                                <input
+                                    id="uploadEncryptedFileInput"
+                                    type="file"
+                                    class="file-input file-input-bordered file-input-sm hidden"
+                                />
+                            </div>
+                            <div
+                                class="tooltip"
+                                data-tip="Сохраните зашифрованный текст в файл"
+                            >
+                                <button id="downloadEncryptedButton" class="btn" type="button" onclick="">Сохранить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:w-80"></div>
+            </form>
+        </main>
+        <footer class="footer footer-center p-5">
+            <p>© Scorpi-ON — 2024</p>
+        </footer>
+    </body>
+</html>
