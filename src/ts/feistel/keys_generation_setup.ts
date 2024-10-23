@@ -7,18 +7,15 @@ function genKeys(count: number): number[] {
 }
 
 export default function setupKeysGeneration(): void {
-    const feistelRoundCountInput = document.getElementById(
-        'feistelRoundCount'
-    )! as HTMLInputElement;
+    const genFeistelKeysBtn: HTMLElement = document.getElementById('genFeistelKeysBtn')!;
     const keysTextArea = document.getElementById('keysText')! as HTMLTextAreaElement;
     const sourceTextArea: HTMLElement = document.getElementById('sourceText')!;
 
-    feistelRoundCountInput.onchange = (): void => {
-        keysTextArea.value = genKeys(Number(feistelRoundCountInput.value)).join('\n');
+    genFeistelKeysBtn.onclick = (): void => {
+        keysTextArea.value = genKeys(8).join('\n');
         sourceTextArea.dispatchEvent(new Event('input'));
     };
     keysTextArea.oninput = (): void => {
         sourceTextArea.dispatchEvent(new Event('input'));
     };
-    feistelRoundCountInput.dispatchEvent(new Event('change'));
 }

@@ -12,7 +12,7 @@
         <title>БПиД №2.7</title>
         <link href="/src/css/index.css" rel="stylesheet" />
     </head>
-    <body class="flex min-h-screen flex-col">
+    <body class="flex flex-col min-h-screen space-y-8">
         <header class="p-4">
             <h1 class="text-center font-medium sm:text-2xl">
                 Лабораторная работа по БПиД №2<br />вариант 7
@@ -70,33 +70,28 @@
                             <p>Схема сети:</p>
                             <img class="block rounded-xl bg-white" src="src/res/feistel-network.png" alt="Схема сети Фейстеля">
                         </div>
-                        <div>
-                            <span class="label inline">Количество раундов:</span>
-                            <input
-                                type="number"
-                                name="feistelRoundCount"
-                                id="feistelRoundCount"
-                                class="input input-bordered h-9 w-9 p-2"
-                                min="8"
-                                max="16"
-                                step="8"
-                                value="8"
-                            />
-                        </div>
-                        <div>
-                            <span class="label">Ключи шифрования:</span>
+                        <div class="flex flex-col w-44 space-y-2">
                             <textarea
-                                class="textarea textarea-bordered resize-none w-40 h-64"
+                                class="textarea textarea-bordered resize-none h-64"
                                 id="keysText"
                                 name="keysText"
+                                placeholder="Ключи шифрования"
                             ></textarea>
+                            <button id="genFeistelKeysBtn" class="btn btn-primary" type="button" onclick="">Сгенерировать</button>
+                            <button class="btn" type="button" onclick="document.getElementById('uploadSourceFileInput').click();">Загрузить</button>
+                            <input
+                                id="uploadKeysFileInput"
+                                type="file"
+                                class="file-input file-input-bordered file-input-sm hidden"
+                            />
+                            <button id="downloadKeysButton" class="btn" type="button" onclick="">Сохранить</button>
                         </div>
                     </div>
                 </div>
                 <div
                     class="flex w-full flex-wrap space-y-10 sm:w-auto sm:grow sm:space-x-5 sm:space-y-0"
                 >
-                    <div class="flex w-full flex-col space-y-3 sm:w-auto sm:grow">
+                    <div class="flex w-full flex-col space-y-2 sm:w-auto sm:grow">
                         <textarea
                             class="textarea textarea-bordered h-48 resize-none sm:h-96 w-full"
                             id="sourceText"
@@ -123,7 +118,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex w-full flex-col space-y-3 sm:w-auto sm:grow">
+                    <div class="flex w-full flex-col space-y-2 sm:w-auto sm:grow">
                         <textarea
                             class="textarea textarea-bordered h-48 resize-none sm:h-96 w-full"
                             id="encryptedText"

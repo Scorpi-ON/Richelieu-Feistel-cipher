@@ -18,7 +18,7 @@ export function encrypt(text: string, gridSize: number, freeCellsIndexes: number
     while (textIndex < text.length) {
         for (let i = 0; i < gridSize; ++i) {
             if (freeCellsIndexes.includes(i)) {
-                encryptedText += text[textIndex];
+                encryptedText += text[textIndex] ?? ' ';
                 ++textIndex;
             } else {
                 encryptedText += getRandomCharacter();
