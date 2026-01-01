@@ -47,7 +47,6 @@ jobs:
               run: bun install --frozen-lockfile
 
             - name: Run ESLint
-              working-directory: web
               run: bun run lint
 
     test:
