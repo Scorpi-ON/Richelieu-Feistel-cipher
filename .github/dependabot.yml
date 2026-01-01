@@ -1,0 +1,8 @@
+version: 2
+updates:
+    - package-ecosystem: "npm"
+      schedule:
+          interval: "monthly"
+      ignore:
+          - dependency-name: "*"
+            update-types: ["version-update:semver-minor", "version-update:semver-patch"]

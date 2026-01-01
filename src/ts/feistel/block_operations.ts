@@ -1,6 +1,6 @@
-import { Bit, BYTE_SIZE, BLOCK_SIZE } from './constants.ts';
-import { numberToBits, bitsToNumber } from './bitwise_operations.ts';
-import utf32 from '../utils/utf32.ts';
+import utf32 from "../utils/utf32.ts";
+import { bitsToNumber, numberToBits } from "./bitwise_operations.ts";
+import { Bit, BLOCK_SIZE, BYTE_SIZE } from "./constants.ts";
 
 const BLOCK_BYTE_SIZE = BLOCK_SIZE / BYTE_SIZE;
 
@@ -9,7 +9,7 @@ function textToBlockBytes(text: string): number[] {
 
     const placeholderBytesCount = BLOCK_BYTE_SIZE - (textBytes.length % BLOCK_BYTE_SIZE);
     if (placeholderBytesCount < BLOCK_BYTE_SIZE) {
-        const placeholderBytes: number[] = Array(placeholderBytesCount / utf32.BYTES_PER_ELEMENT)
+        const placeholderBytes: number[] = Array<number[]>(placeholderBytesCount / utf32.BYTES_PER_ELEMENT)
             .fill(utf32.WHITESPACE_CODES)
             .flat();
         textBytes = [...placeholderBytes, ...textBytes];
@@ -23,7 +23,7 @@ export function textToBlocks(text: string): bigint[] {
     const bits: Bit[] = textBytes.map((byte) => numberToBits(byte, BYTE_SIZE)).flat();
 
     const blockCount = bits.length / BLOCK_SIZE;
-    const blocks: bigint[] = Array(blockCount);
+    const blocks: bigint[] = Array<bigint>(blockCount);
     for (let index = 0, offset = 0; index < blockCount; ++index) {
         const blockBits = bits.slice(offset, (offset += BLOCK_SIZE));
         blocks[index] = bitsToNumber(blockBits);
@@ -33,7 +33,7 @@ export function textToBlocks(text: string): bigint[] {
 }
 
 export function blocksToText(blocks: readonly bigint[]): string {
-    let textBytes = new Uint8Array(BLOCK_BYTE_SIZE * blocks.length);
+    const textBytes = new Uint8Array(BLOCK_BYTE_SIZE * blocks.length);
     const bits: Bit[] = blocks.map((block) => numberToBits(block, BLOCK_SIZE)).flat();
 
     for (let index = 0, offset = 0; offset < bits.length; ++index) {

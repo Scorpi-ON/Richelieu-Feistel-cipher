@@ -1,3 +1,47 @@
+### IDEs and editors
 .idea/
+.vs/
+.vscode/
+!.vscode/settings.json
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+### Env files
+.env*
+!.env.template
+!.env.example
+
+### Temp directory
+.temp/
+.tmp/
+
+### JS dependencies
 node_modules/
+
+### Testing
+coverage/
+
+### Vite
 dist/
+
+### Production
+build/
+bin/
+
+### Misc
+.DS_Store
+*.pem
+
+### Typescript
+*.tsbuildinfo
+next-env.d.ts
+
+### Logs
+logs/
+
+### cp files
+*.cp

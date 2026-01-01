@@ -1,40 +1,76 @@
 name: Lint and Test
+permissions:
+    contents: read
+    pull-requests: read
 
-on: [ push, pull_request ]
+on:
+    push:
+        paths:
+            - "**.js"
+            - "**.mjs"
+            - "**.ts"
+            - "**.jsx"
+            - "**.tsx"
+            - "**.html"
+            - "**.css"
+            - ".github/**"
+    pull_request:
+        paths:
+            - "**.js"
+            - "**.ts"
+            - "**.jsx"
+            - "**.tsx"
+            - "**.html"
+            - "**.css"
+            - ".github/**"
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+    eslint:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '23'
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: 1.3
 
-      - name: Install dependencies
-        run: npm ci
+            - name: Restore cached dependencies
+              uses: actions/cache@v4
+              with:
+                  path: ~/.bun/install/cache
+                  key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+                  restore-keys: ${{ runner.os }}-bun-
 
-      - name: Run linter
-        run: npm run lint
+            - name: Install dependencies
+              run: bun install --frozen-lockfile
 
-  test:
-    runs-on: ubuntu-latest
-    needs: lint
+            - name: Run ESLint
+              working-directory: web
+              run: bun run lint
 
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+    test:
+        runs-on: ubuntu-latest
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '23'
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: npm ci
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: 1.3
 
-      - name: Run tests
-        run: npm run test
+            - name: Restore cached dependencies
+              uses: actions/cache@v4
+              with:
+                  path: ~/.bun/install/cache
+                  key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+                  restore-keys: ${{ runner.os }}-bun-
+
+            - name: Install dependencies
+              run: bun install --frozen-lockfile
+
+            - name: Run tests
+              run: bun run test
