@@ -1,8 +1,8 @@
-const INVALID_GRID_ERROR = new Error('В решётке Ришелье должна быть хотя бы одна свободная клетка');
+const INVALID_GRID_ERROR = new Error("В решётке Ришелье должна быть хотя бы одна свободная клетка");
 
 function getRandomCharacter(): string {
     const characters =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя0123456789.!?,;:—\'"«»()';
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя0123456789.!?,;:—'\"«»()";
     const randomIndex = Math.floor(Math.random() * characters.length);
     return characters[randomIndex];
 }
@@ -12,13 +12,13 @@ export function encrypt(text: string, gridSize: number, freeCellsIndexes: number
         throw INVALID_GRID_ERROR;
     }
 
-    let encryptedText = '';
+    let encryptedText = "";
     let textIndex = 0;
 
     while (textIndex < text.length) {
         for (let i = 0; i < gridSize; ++i) {
             if (freeCellsIndexes.includes(i)) {
-                encryptedText += text[textIndex] ?? ' ';
+                encryptedText += text[textIndex] ?? " ";
                 ++textIndex;
             } else {
                 encryptedText += getRandomCharacter();
@@ -29,7 +29,7 @@ export function encrypt(text: string, gridSize: number, freeCellsIndexes: number
 }
 
 export function decrypt(text: string, gridSize: number, freeCellsIndexes: number[]): string {
-    let decryptedText = '';
+    let decryptedText = "";
 
     if (freeCellsIndexes.length === 0) {
         throw INVALID_GRID_ERROR;

@@ -1,33 +1,65 @@
-name: Build and Deploy
+name: Build and deploy
 
 on:
-  workflow_run:
-    workflows: [ "Lint and Test" ]
-    types:
-      - completed
+    push:
+        branches: ["main"]
+        paths:
+            - "*"
+            - "!*.md"
+            - "!LICENSE"
+            - "!.gitignore"
+            - "!.env.template"
+            - "!eslint.config.ts"
+            - "!prettier.config.ts"
+            - "!jest.config.ts"
+    pull_request:
+        branches: ["main"]
+        paths:
+            - "*"
+            - "!*.md"
+            - "!LICENSE"
+            - "!.gitignore"
+            - "!.env.template"
+            - "!eslint.config.ts"
+            - "!prettier.config.ts"
+            - "!jest.config.ts"
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' 
-      && github.event.workflow_run.head_branch == 'main' }}
+    build:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
 
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '23'
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: 1.3
 
-      - name: Install dependencies
-        run: npm install --omit dev
+            - name: Cache dependencies
+              uses: actions/cache@v4
+              with:
+                  path: ~/.bun/install/cache
+                  key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+                  restore-keys: ${{ runner.os }}-bun-
 
-      - name: Build project
-        run: npm run build
+            - name: Cache build
+              uses: actions/cache@v4
+              with:
+                  path: ${{ github.workspace }}/.dist
+                  key: ${{ runner.os }}-vite-${{ hashFiles('**/bun.lock', '**/*.js', '**/*.mjs', '**/*.css', '**/*.ts') }}
+                  restore-keys: ${{ runner.os }}-vite-
 
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: dist
+            - name: Install dependencies
+              run: bun install --frozen-lockfile
+
+            - name: Build project
+              run: bun run build
+
+            - name: Deploy 🚀
+              uses: JamesIves/github-pages-deploy-action@v4
+              with:
+                  folder: dist

@@ -1,20 +1,16 @@
-import { Bit, BLOCK_SIZE, THREAD_SIZE, THREAD_COUNT, THREAD_MASK } from './constants.ts';
+import { Bit, BLOCK_SIZE, THREAD_COUNT, THREAD_MASK, THREAD_SIZE } from "./constants.ts";
 
-export function numberToBits(num: number, bitCount: number): Bit[];
-export function numberToBits(num: bigint, bitCount: number): Bit[];
 export function numberToBits(num: number | bigint, bitCount: number): Bit[] {
     if (num < 0) {
-        throw new Error('Конвертируемое число должно быть неотрицательным числом');
+        throw new Error("Конвертируемое число должно быть неотрицательным числом");
     } else if (num > 1n << BigInt(bitCount)) {
-        throw new Error(
-            'Переданное количество битов должно быть больше или равно реальному количеству битов числа'
-        );
+        throw new Error("Переданное количество битов должно быть больше или равно реальному количеству битов числа");
     }
 
-    let bits: Bit[] = Array(bitCount).fill(0);
+    const bits: Bit[] = Array<Bit>(bitCount).fill(0);
     let i = bitCount - 1;
 
-    if (typeof num === 'bigint') {
+    if (typeof num === "bigint") {
         for (; num > 0n; --i) {
             bits[i] = Number(num & 1n) as Bit;
             num >>= 1n;
@@ -44,7 +40,7 @@ export function blockToThreads(block: bigint): bigint[] {
         throw new Error(`Блок должен быть числом от 0 до 2^${BLOCK_SIZE} - 1`);
     }
 
-    let threads: bigint[] = Array(THREAD_COUNT);
+    const threads: bigint[] = Array<bigint>(THREAD_COUNT);
     for (let i = 0, offset = BLOCK_SIZE - THREAD_SIZE; offset >= 0; ++i, offset -= THREAD_SIZE) {
         threads[i] = (block >> BigInt(offset)) & THREAD_MASK;
     }
