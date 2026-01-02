@@ -2,52 +2,56 @@ import * as feistelCipher from "../feistel/cipher.ts";
 import * as richelieuCipher from "../richelieu/cipher.ts";
 import utf32 from "../utils/utf32.ts";
 
-const FILE_READER = new FileReader();
+function parseFeistelKeys(text: string): bigint[] {
+    return text
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter((line) => line.length > 0)
+        .map((line) => BigInt(line));
+}
+
+function getRichelieuFreeCellsIndexes(richelieuGridCheckboxes: HTMLInputElement[]): number[] {
+    const freeCellsIndexes: number[] = [];
+    richelieuGridCheckboxes.forEach((checkbox, index) => {
+        if (!checkbox.checked) {
+            freeCellsIndexes.push(index);
+        }
+    });
+    return freeCellsIndexes;
+}
 
 function syncTextChange(
     cipherForm: HTMLFormElement,
+    cipherMethodCheckbox: HTMLInputElement,
+    keysTextarea: HTMLTextAreaElement,
     sourceTextarea: HTMLTextAreaElement,
     encryptedTextarea: HTMLTextAreaElement,
     mode: "source" | "encrypted",
 ): void {
-    const formData = new FormData(cipherForm);
-    const isFeistelCipherMethod = Boolean(formData.get("cipherMethodCheckbox"));
-
-    const richelieuGridCheckboxes = Array.from(cipherForm.elements.namedItem("richelieuGrid")! as RadioNodeList);
-    const richelieuFreeCellsIndexes = richelieuGridCheckboxes.reduce((indexes: number[], element, index) => {
-        if (!element.checked) {
-            indexes.push(index);
-        }
-        return indexes;
-    }, []);
-
     const text = mode === "source" ? sourceTextarea.value : encryptedTextarea.value;
     const processMode = mode === "source" ? "encrypt" : "decrypt";
-    let result: string;
-    let textarea: HTMLTextAreaElement;
+    const targetTextarea = mode === "source" ? encryptedTextarea : sourceTextarea;
 
-    if (isFeistelCipherMethod) {
-        const keys = (document.getElementById("keysText")! as HTMLTextAreaElement).value.split("\n").map(BigInt);
-        if (mode === "source") {
-            result = utf32.base64Encode(feistelCipher.processText(processMode, text, keys));
-            textarea = encryptedTextarea;
-        } else {
-            result = feistelCipher.processText(processMode, utf32.base64Decode(text), keys);
-            textarea = sourceTextarea;
-        }
-    } else if (richelieuFreeCellsIndexes.length > 0) {
-        if (mode === "source") {
-            result = richelieuCipher.encrypt(text, richelieuGridCheckboxes.length, richelieuFreeCellsIndexes);
-            textarea = encryptedTextarea;
-        } else {
-            result = richelieuCipher.decrypt(text, richelieuGridCheckboxes.length, richelieuFreeCellsIndexes);
-            textarea = sourceTextarea;
-        }
-    } else {
-        textarea = mode === "source" ? encryptedTextarea : sourceTextarea;
-        result = text;
+    if (cipherMethodCheckbox.checked) {
+        const keys = parseFeistelKeys(keysTextarea.value);
+        targetTextarea.value =
+            mode === "source"
+                ? utf32.base64Encode(feistelCipher.processText(processMode, text, keys))
+                : feistelCipher.processText(processMode, utf32.base64Decode(text), keys);
+        return;
     }
-    textarea.value = result;
+
+    const richelieuGridCheckboxes = Array.from(cipherForm.elements.namedItem("richelieuGrid") as RadioNodeList);
+    const richelieuFreeCellsIndexes = getRichelieuFreeCellsIndexes(richelieuGridCheckboxes);
+    if (richelieuFreeCellsIndexes.length === 0) {
+        targetTextarea.value = text;
+        return;
+    }
+
+    targetTextarea.value =
+        mode === "source"
+            ? richelieuCipher.encrypt(text, richelieuGridCheckboxes.length, richelieuFreeCellsIndexes)
+            : richelieuCipher.decrypt(text, richelieuGridCheckboxes.length, richelieuFreeCellsIndexes);
 }
 
 function syncScroll(source: HTMLTextAreaElement, target: HTMLTextAreaElement): void {
@@ -60,16 +64,18 @@ function syncScroll(source: HTMLTextAreaElement, target: HTMLTextAreaElement): v
 }
 
 function fromFileToTextarea(fileInput: HTMLInputElement, textarea: HTMLTextAreaElement): void {
-    if (fileInput.files!.length === 0) {
+    const file = fileInput.files?.[0];
+    if (!file) {
         return;
     }
-    const file = fileInput.files![0];
-    FILE_READER.onload = (event): void => {
-        textarea.value = event.target!.result as string;
+    const reader = new FileReader();
+    reader.onload = (): void => {
+        const result = reader.result;
+        textarea.value = typeof result === "string" ? result : "";
         textarea.dispatchEvent(new Event("input"));
         fileInput.value = "";
     };
-    FILE_READER.readAsText(file, utf32.NAME);
+    reader.readAsText(file, utf32.NAME);
 }
 
 function fromTextareaToFile(textarea: HTMLTextAreaElement, filename: string): void {
@@ -89,6 +95,7 @@ function fromTextareaToFile(textarea: HTMLTextAreaElement, filename: string): vo
 
 export default function setupTextareas(): void {
     const cipherForm: HTMLFormElement = document.forms.namedItem("cipherForm")!;
+    const cipherMethodCheckbox = cipherForm.elements.namedItem("cipherMethodCheckbox") as HTMLInputElement;
     const sourceTextarea = cipherForm.elements.namedItem("sourceText") as HTMLTextAreaElement;
     const encryptedTextarea = cipherForm.elements.namedItem("encryptedText") as HTMLTextAreaElement;
     const keysTextarea = cipherForm.elements.namedItem("keysText") as HTMLTextAreaElement;
@@ -100,10 +107,10 @@ export default function setupTextareas(): void {
     const downloadEncryptedButton = cipherForm.elements.namedItem("downloadEncryptedButton") as HTMLButtonElement;
 
     sourceTextarea.oninput = (): void => {
-        syncTextChange(cipherForm, sourceTextarea, encryptedTextarea, "source");
+        syncTextChange(cipherForm, cipherMethodCheckbox, keysTextarea, sourceTextarea, encryptedTextarea, "source");
     };
     encryptedTextarea.oninput = (): void => {
-        syncTextChange(cipherForm, sourceTextarea, encryptedTextarea, "encrypted");
+        syncTextChange(cipherForm, cipherMethodCheckbox, keysTextarea, sourceTextarea, encryptedTextarea, "encrypted");
     };
 
     sourceTextarea.onscroll = (): void => {

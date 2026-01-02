@@ -3,7 +3,7 @@ import { Bit, BLOCK_SIZE, THREAD_COUNT, THREAD_MASK, THREAD_SIZE } from "./const
 export function numberToBits(num: number | bigint, bitCount: number): Bit[] {
     if (num < 0) {
         throw new Error("Конвертируемое число должно быть неотрицательным числом");
-    } else if (num > 1n << BigInt(bitCount)) {
+    } else if (num >= 1n << BigInt(bitCount)) {
         throw new Error("Переданное количество битов должно быть больше или равно реальному количеству битов числа");
     }
 

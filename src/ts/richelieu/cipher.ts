@@ -12,12 +12,13 @@ export function encrypt(text: string, gridSize: number, freeCellsIndexes: number
         throw INVALID_GRID_ERROR;
     }
 
+    const freeCells = new Set(freeCellsIndexes);
     let encryptedText = "";
     let textIndex = 0;
 
     while (textIndex < text.length) {
         for (let i = 0; i < gridSize; ++i) {
-            if (freeCellsIndexes.includes(i)) {
+            if (freeCells.has(i)) {
                 encryptedText += text[textIndex] ?? " ";
                 ++textIndex;
             } else {
@@ -35,8 +36,9 @@ export function decrypt(text: string, gridSize: number, freeCellsIndexes: number
         throw INVALID_GRID_ERROR;
     }
 
+    const freeCells = new Set(freeCellsIndexes);
     for (let i = 0; i < text.length; ++i) {
-        if (freeCellsIndexes.includes(i % gridSize)) {
+        if (freeCells.has(i % gridSize)) {
             decryptedText += text[i];
         }
     }

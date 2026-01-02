@@ -1,5 +1,3 @@
-type Operation = "add" | "remove";
-
 export default function setupCipherMethodCheckbox(): void {
     const cipherMethodCheckbox = document.getElementById("cipherMethodCheckbox")! as HTMLInputElement;
     const richelieuInfo: HTMLElement = document.getElementById("richelieuInfo")!;
@@ -10,12 +8,11 @@ export default function setupCipherMethodCheckbox(): void {
 
     cipherMethodCheckbox.onchange = (): void => {
         const isFeistelChosen: boolean = cipherMethodCheckbox.checked;
-        const methods: Operation[] = isFeistelChosen ? ["add", "remove"] : ["remove", "add"];
 
-        richelieuInfo.classList[methods[0]]("hidden");
-        feistelInfo.classList[methods[1]]("hidden");
-        richelieuLabel.classList[methods[1]]("font-bold");
-        feistelLabel.classList[methods[0]]("font-bold");
+        richelieuInfo.classList.toggle("hidden", isFeistelChosen);
+        feistelInfo.classList.toggle("hidden", !isFeistelChosen);
+        richelieuLabel.classList.toggle("font-bold", !isFeistelChosen);
+        feistelLabel.classList.toggle("font-bold", isFeistelChosen);
 
         sourceTextArea.dispatchEvent(new Event("input"));
     };

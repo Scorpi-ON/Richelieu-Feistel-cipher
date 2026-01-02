@@ -12,6 +12,7 @@ on:
             - "!eslint.config.ts"
             - "!prettier.config.ts"
             - "!jest.config.ts"
+            - "!.lintstagedrc.ts"
     pull_request:
         branches: ["main"]
         paths:
@@ -23,6 +24,7 @@ on:
             - "!eslint.config.ts"
             - "!prettier.config.ts"
             - "!jest.config.ts"
+            - "!.lintstagedrc.ts"
 
 jobs:
     build:
@@ -54,7 +56,7 @@ jobs:
                   restore-keys: ${{ runner.os }}-vite-
 
             - name: Install dependencies
-              run: bun install --frozen-lockfile
+              run: bun install --frozen-lockfile --omit dev
 
             - name: Build project
               run: bun run build

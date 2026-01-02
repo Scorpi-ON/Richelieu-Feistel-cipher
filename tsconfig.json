@@ -20,5 +20,5 @@
         "noFallthroughCasesInSwitch": true
     },
     "include": ["src/**/*.ts"],
-    "exclude": ["node_modules", "dist", "eslint.config.ts", "prettier.config.ts"]
+    "exclude": ["node_modules", "dist", "*.config.ts"]
 }

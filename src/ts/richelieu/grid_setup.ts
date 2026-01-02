@@ -1,4 +1,4 @@
-function generateRichelieuGrid(height: number, width: number): HTMLTableElement {
+function generateRichelieuGrid(height: number, width: number, onGridChange: () => void): HTMLTableElement {
     const table: HTMLTableElement = document.createElement("table");
     table.id = "richelieuGridTable";
     table.classList.add("table", "w-8", "mt-3");
@@ -14,6 +14,7 @@ function generateRichelieuGrid(height: number, width: number): HTMLTableElement 
             td.appendChild(input);
         }
     }
+    table.addEventListener("change", onGridChange);
     return table;
 }
 
@@ -27,20 +28,30 @@ function getGridSize(): { height: number; width: number } {
     return { height, width };
 }
 
-function gridSizeChangeListener(): void {
+function gridSizeChangeListener(onGridChange: () => void): void {
     const richelieuInfo: HTMLElement = document.getElementById("richelieuInfo")!;
     const { height, width } = getGridSize();
-    const table: HTMLTableElement = generateRichelieuGrid(height, width);
+    const table: HTMLTableElement = generateRichelieuGrid(height, width, onGridChange);
 
     document.getElementById("richelieuGridTable")?.remove();
     richelieuInfo.appendChild(table);
+    onGridChange();
 }
 
 export default function setupRichelieuGrid(): void {
     const widthInput: HTMLElement = document.getElementById("richelieuGridSizeWidth")!;
     const heightInput: HTMLElement = document.getElementById("richelieuGridSizeHeight")!;
+    const sourceTextArea = document.getElementById("sourceText")! as HTMLTextAreaElement;
 
-    widthInput.onchange = gridSizeChangeListener;
-    heightInput.onchange = gridSizeChangeListener;
-    gridSizeChangeListener();
+    const handleGridChange = (): void => {
+        sourceTextArea.dispatchEvent(new Event("input"));
+    };
+
+    widthInput.onchange = (): void => {
+        gridSizeChangeListener(handleGridChange);
+    };
+    heightInput.onchange = (): void => {
+        gridSizeChangeListener(handleGridChange);
+    };
+    gridSizeChangeListener(handleGridChange);
 }

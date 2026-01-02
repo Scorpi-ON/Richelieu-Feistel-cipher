@@ -24,7 +24,7 @@ const eslintConfig = defineConfig([
             "@typescript-eslint/restrict-template-expressions": "off",
             "@typescript-eslint/no-non-null-assertion": "off",
         },
-        ignores: ["prettier.config.ts", "eslint.config.ts", "jest.config.ts"],
+        ignores: ["*.config.ts", ".lintstagedrc.ts"],
     },
     {
         files: ["**/*.{jsx,tsx}"],
