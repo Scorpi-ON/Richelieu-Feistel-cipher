@@ -10,8 +10,8 @@
                 Вариант №7: шифр Ришелье и сеть Фейстеля (схема №3 из методички)."
         />
         <title>БПиД №2.7</title>
-      <script type="module" crossorigin src="/Richelieu-Feistel-cipher/assets/index-BBhnsKCy.js"></script>
-      <link rel="stylesheet" crossorigin href="/Richelieu-Feistel-cipher/assets/index-B8iOi8IX.css">
+      <script type="module" crossorigin src="/Richelieu-Feistel-cipher/assets/index-e_Ft5Rgb.js"></script>
+      <link rel="stylesheet" crossorigin href="/Richelieu-Feistel-cipher/assets/index-Dyscurk3.css">
     </head>
     <body class="flex min-h-screen flex-col space-y-8">
         <header class="p-4">
@@ -57,18 +57,21 @@
                             />
                         </div>
                     </div>
-                    <div id="feistelInfo" class="flex hidden max-w-[18.5rem] flex-col space-y-3">
-                        <div class="space-y-1">
+                    <div
+                        id="feistelInfo"
+                        class="flex hidden flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-3 lg:max-w-[18.5rem]"
+                    >
+                        <div class="w-full space-y-2 sm:w-1/2">
                             <p>Схема сети:</p>
                             <img
-                                class="block rounded-sm bg-white"
+                                class="block w-full rounded-sm bg-white"
                                 src="/Richelieu-Feistel-cipher/assets/feistel-network-C8kIF9iQ.png"
                                 alt="Схема сети Фейстеля"
                             />
                         </div>
-                        <div class="flex w-44 flex-col space-y-2">
+                        <div class="mb-5 flex w-full flex-col space-y-2 sm:w-1/2">
                             <textarea
-                                class="textarea h-64 resize-none"
+                                class="textarea h-64 w-full resize-none"
                                 id="keysText"
                                 name="keysText"
                                 placeholder="Ключи шифрования"
@@ -79,7 +82,7 @@
                             <button
                                 class="btn"
                                 type="button"
-                                onclick="document.getElementById('uploadSourceFileInput').click()"
+                                onclick="document.getElementById('uploadKeysFileInput').click()"
                             >
                                 Загрузить
                             </button>
@@ -88,7 +91,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex w-full flex-wrap space-y-10 sm:w-auto sm:grow sm:space-y-0 sm:space-x-5">
+                <div class="flex w-full flex-wrap space-y-5 sm:w-auto sm:grow sm:space-y-0 sm:space-x-5">
                     <div class="flex w-full flex-col space-y-2 sm:w-auto sm:grow">
                         <textarea
                             class="textarea h-48 w-full resize-none sm:h-96"
