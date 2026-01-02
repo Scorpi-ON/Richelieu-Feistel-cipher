@@ -91,8 +91,11 @@ export default function setupTextareas(): void {
     const cipherForm: HTMLFormElement = document.forms.namedItem("cipherForm")!;
     const sourceTextarea = cipherForm.elements.namedItem("sourceText") as HTMLTextAreaElement;
     const encryptedTextarea = cipherForm.elements.namedItem("encryptedText") as HTMLTextAreaElement;
+    const keysTextarea = cipherForm.elements.namedItem("keysText") as HTMLTextAreaElement;
+    const uploadKeysFileInput = cipherForm.elements.namedItem("uploadKeysFileInput") as HTMLInputElement;
     const uploadSourceFileInput = cipherForm.elements.namedItem("uploadSourceFileInput") as HTMLInputElement;
     const uploadEncryptedFileInput = cipherForm.elements.namedItem("uploadEncryptedFileInput") as HTMLInputElement;
+    const downloadKeysButton = cipherForm.elements.namedItem("downloadKeysButton") as HTMLButtonElement;
     const downloadSourceButton = cipherForm.elements.namedItem("downloadSourceButton") as HTMLButtonElement;
     const downloadEncryptedButton = cipherForm.elements.namedItem("downloadEncryptedButton") as HTMLButtonElement;
 
@@ -116,7 +119,13 @@ export default function setupTextareas(): void {
     uploadEncryptedFileInput.onchange = (): void => {
         fromFileToTextarea(uploadEncryptedFileInput, encryptedTextarea);
     };
+    uploadKeysFileInput.onchange = (): void => {
+        fromFileToTextarea(uploadKeysFileInput, keysTextarea);
+    };
 
+    downloadKeysButton.onclick = (): void => {
+        fromTextareaToFile(keysTextarea, "feistel-keys.txt");
+    };
     downloadSourceButton.onclick = (): void => {
         fromTextareaToFile(sourceTextarea, "source.txt");
     };
