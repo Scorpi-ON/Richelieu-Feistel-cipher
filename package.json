@@ -11,7 +11,7 @@
         "test": "bun run jest",
         "test:coverage": "bun run jest --coverage",
         "typecheck": "bun run --bun tsc",
-        "prepare": "bun run --bun husky"
+        "prepare": "bun -e \"const fs=require('fs');if(fs.existsSync('node_modules/husky')){require('child_process').execSync('bun run --bun husky',{stdio:'inherit'});}\""
     },
     "dependencies": {
         "@tailwindcss/vite": "^4.1.18",
